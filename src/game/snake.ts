@@ -4,11 +4,19 @@ import { Direction, randomDirection } from './direction'
 import { Field } from './field'
 import { Vector } from './vector'
 
+export class SnakeCollapcedException extends Error {
+  constructor() {
+    super('Snake collapsed')
+    this.name = 'SnakeCollapcedException'
+    Object.setPrototypeOf(this, SnakeCollapcedException.prototype)
+  }
+}
+
 export class Snake {
   public direction: Direction
   private body: Vector[]
 
-  constructor(private readonly field: Field, private readonly onCollapse: () => void) {
+  constructor(private readonly field: Field) {
     const direction = randomDirection()
     const body = Snake.getInitialBody(field.fieldSize, direction)
 
@@ -30,7 +38,7 @@ export class Snake {
     const added = Snake.getMoveSquare(this.direction, last, this.field.fieldSize)
 
     if (Snake.hasCollapsed(this.body, added)) {
-      this.onCollapse()
+      throw new SnakeCollapcedException()
     }
     this.body.push(added)
 

@@ -8,4 +8,4 @@ if (!canvas) {
 }
 
 const game = new Game(canvas)
-game.init()
+game.start()

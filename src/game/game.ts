@@ -2,7 +2,7 @@ import { Canvas } from './canvas'
 import { Direction, isValidDirectionChange } from './direction'
 import { Field } from './field'
 import { Keyboard } from './keyboard'
-import { Snake } from './snake'
+import { Snake, SnakeCollapcedException } from './snake'
 
 export class Game {
   private readonly field: Field
@@ -14,7 +14,7 @@ export class Game {
   constructor(canvasElem: HTMLCanvasElement) {
     const canvas = new Canvas(canvasElem)
     const field = new Field(canvas)
-    const snake = new Snake(field, this.events.loss)
+    const snake = new Snake(field)
     const keyboard = new Keyboard(this.actions)
 
     this.field = field
@@ -22,7 +22,7 @@ export class Game {
     this.keyboard = keyboard
   }
 
-  public init(): void {
+  public start(): void {
     this.field.initRender()
     this.snake.initRender()
     this.startSnake()
@@ -38,12 +38,10 @@ export class Game {
     this.tickInterval = setInterval(() => this.snake.move(), 500)
   }
 
-  private readonly events = {
-    loss: () => {
-      clearInterval(this.tickInterval)
-      this.lost = true
-      alert('you lost')
-    },
+  private loss() {
+    clearInterval(this.tickInterval)
+    this.lost = true
+    alert('you lost')
   }
 
   private readonly actions = {
@@ -52,9 +50,14 @@ export class Game {
         return
       }
       this.snake.direction = direction
-      this.snake.move()
-      if (!this.lost) {
+      try {
+        this.snake.move()
         this.restartSnake()
+      } catch (error) {
+        if (error instanceof SnakeCollapcedException) {
+          clearInterval(this.tickInterval)
+          this.loss()
+        }
       }
     },
   }
