@@ -1,6 +1,7 @@
 import { COLORS, SNAKE_INIT_SIZE } from '../config'
 import { randomInteger } from '../utils/randomInteger'
 import { Direction, randomDirection } from './direction'
+import { Entity } from './entity'
 import { Field } from './field'
 import { Vector } from './vector'
 
@@ -12,46 +13,46 @@ export class SnakeCollapcedException extends Error {
   }
 }
 
-export class Snake {
+export class Snake implements Entity {
+  public readonly color = COLORS.snake
   public direction: Direction
-  private _body: Vector[]
+  private body: Vector[]
 
   constructor(private readonly field: Field) {
     const direction = randomDirection()
     const body = Snake.getInitialBody(field.fieldSize, direction)
+    body.forEach((position) => field.updateSquare(position, this))
 
     this.direction = direction
-    this._body = body
+    this.body = body
   }
 
   public initRender() {
-    this._body.forEach((square) => {
-      return this.field.paintSquare(square, COLORS.snake)
+    this.body.forEach((square) => {
+      return this.field.updateSquare(square, this)
     })
   }
 
   public move() {
-    const removed = this._body.shift()
+    const removed = this.body.shift()
     if (!removed) throw Error('Snake move error')
-    const last = Field.getLastSquare(this._body)
+    const last = Field.getLastSquare(this.body)
 
     const added = Snake.getMoveSquare(this.direction, last, this.field.fieldSize)
 
-    if (Snake.hasCollapsed(this._body, added)) {
+    if (this.willCollapse(added)) {
       throw new SnakeCollapcedException()
     }
-    this._body.push(added)
+    this.body.push(added)
 
-    this.field.clearSquare(removed)
-    this.field.paintSquare(added, COLORS.snake)
+    this.field.updateSquare(added, this)
+    this.field.updateSquare(removed, null)
+    this.field.renderSquare(added)
+    this.field.renderSquare(removed)
   }
 
-  public get body() {
-    return this._body
-  }
-
-  private static hasCollapsed(body: Vector[], move: Vector): boolean {
-    return body.some((square) => Vector.areEqual(square, move))
+  private willCollapse(move: Vector): boolean {
+    return this.field.getSquare(move).entity === this
   }
 
   private static getInitialBody(fieldSize: Vector, direction: Direction): Vector[] {

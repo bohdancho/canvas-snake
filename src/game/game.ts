@@ -4,7 +4,6 @@ import { Field } from './field'
 import { Food } from './food'
 import { Keyboard } from './keyboard'
 import { Snake, SnakeCollapcedException } from './snake'
-import { Vector } from './vector'
 
 export class Game {
   private readonly field: Field
@@ -16,10 +15,13 @@ export class Game {
 
   constructor(canvasElem: HTMLCanvasElement) {
     const canvas = new Canvas(canvasElem)
+
     const field = new Field(canvas)
     this.field = field
+
     const snake = new Snake(field)
     this.snake = snake
+
     const food = this.generateFood()
     this.food = food
 
@@ -29,18 +31,13 @@ export class Game {
   public start(): void {
     this.field.initRender()
     this.snake.initRender()
+    this.food.initRender()
     this.startSnake()
     this.keyboard.listen()
   }
 
   private generateFood(): Food {
-    return new Food(this.field, this.randomFreePosition())
-  }
-
-  private randomFreePosition(): Vector {
-    const position = Vector.random(this.field.fieldSize)
-    const conflict = this.snake.body.some((square) => Vector.areEqual(position, square))
-    return conflict ? this.randomFreePosition() : position
+    return new Food(this.field, this.field.getRandomFreePosition())
   }
 
   private restartSnake() {
@@ -52,7 +49,7 @@ export class Game {
     this.tickInterval = setInterval(() => this.snake.move(), 500)
   }
 
-  private loss() {
+  private onLoss() {
     clearInterval(this.tickInterval)
     this.lost = true
     alert('you lost')
@@ -70,7 +67,7 @@ export class Game {
       } catch (error) {
         if (error instanceof SnakeCollapcedException) {
           clearInterval(this.tickInterval)
-          this.loss()
+          this.onLoss()
         }
       }
     },

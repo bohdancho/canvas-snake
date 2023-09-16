@@ -1,6 +1,7 @@
-import { COLORS, Color, SQUARE_SIZE_PX } from '../config'
+import { COLORS, SQUARE_SIZE_PX } from '../config'
 import { Canvas } from './canvas'
 import { Direction } from './direction'
+import { Entity } from './entity'
 import { Square } from './square'
 import { Vector } from './vector'
 
@@ -18,7 +19,7 @@ export class Field {
   public initRender() {
     this.squares.forEach((row) =>
       row.forEach((square) => {
-        square.initRender()
+        square.render()
       }),
     )
 
@@ -31,12 +32,24 @@ export class Field {
     )
   }
 
-  public paintSquare(position: Vector, color: Color) {
-    this.squares[position.y][position.x].paint(color)
+  public updateSquare(position: Vector, entity: Entity | null) {
+    const square = this.getSquare(position)
+    square.update(entity)
   }
 
-  public clearSquare(position: Vector) {
-    this.squares[position.y][position.x].clear()
+  public renderSquare(position: Vector) {
+    const square = this.getSquare(position)
+    square.render()
+  }
+
+  public getRandomFreePosition(): Vector {
+    const position = Vector.random(this.fieldSize)
+    const conflict = this.getSquare(position).entity
+    return conflict ? this.getRandomFreePosition() : position
+  }
+
+  public getSquare(position: Vector) {
+    return this.squares[position.y][position.x]
   }
 
   private static getFieldSize(canvas: Canvas, squareSize: number): Vector {
