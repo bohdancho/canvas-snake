@@ -80,9 +80,9 @@ export class Field {
     return new Vector(x, y)
   }
 
-  public static getLastSquare(body: Vector[]): Vector {
-    const last = body.at(-1)
-    if (!last) throw Error('Snake render error')
+  public static getLastSquare(entity: Vector[]): Vector {
+    const last = entity.at(-1)
+    if (!last) throw Error('Entity render error')
     return last
   }
 }
