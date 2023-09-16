@@ -10,13 +10,13 @@ export class Field {
     const fieldSize = Field.getFieldSize(canvas, squareSizePx)
 
     this.fieldSize = fieldSize
-    this.squares = Field.getSquares(fieldSize, canvas, squareSizePx)
+    this.squares = Field.getInitSquares(fieldSize, canvas, squareSizePx)
   }
 
   public render() {
     this.squares.forEach((row) =>
       row.forEach((square) => {
-        square.render()
+        square.render('grey')
       }),
     )
 
@@ -26,6 +26,13 @@ export class Field {
       this.fieldSize.x * this.squareSizePx,
       this.fieldSize.y * this.squareSizePx,
     )
+
+    this.paintSquare(new Vector(25, 22), 'red')
+    this.paintSquare(new Vector(0, 1), 'blue')
+  }
+
+  public paintSquare(position: Vector, color: string) {
+    this.squares[position.y][position.x].paint(color)
   }
 
   private static getFieldSize(canvas: Canvas, squareSize: number): Vector {
@@ -34,7 +41,7 @@ export class Field {
     return new Vector(width, height)
   }
 
-  private static getSquares(fieldSize: Vector, canvas: Canvas, squareSizePx: number) {
+  private static getInitSquares(fieldSize: Vector, canvas: Canvas, squareSizePx: number) {
     const squares: Array<Array<Square>> = []
     for (let y = 0; y < fieldSize.y; y++) {
       squares[y] = []
