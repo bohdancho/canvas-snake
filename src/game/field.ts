@@ -8,9 +8,8 @@ export class Field {
 
   constructor(private readonly canvas: Canvas, private readonly squareSizePx: number) {
     const fieldSize = Field.getFieldSize(canvas, squareSizePx)
-    this.fieldSize = fieldSize
 
-    this.canvas.ctx.strokeStyle = 'black'
+    this.fieldSize = fieldSize
     this.squares = Field.getSquares(fieldSize, canvas, squareSizePx)
   }
 
