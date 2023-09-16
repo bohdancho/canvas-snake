@@ -8,7 +8,7 @@ export class Snake {
   public direction: Direction
   private body: Vector[]
 
-  constructor(private readonly field: Field) {
+  constructor(private readonly field: Field, private readonly onCollapse: () => void) {
     const direction = randomDirection()
     const body = Snake.getInitialBody(field.fieldSize, direction)
 
@@ -26,11 +26,20 @@ export class Snake {
     const removed = this.body.shift()
     if (!removed) throw Error('Snake move error')
     const last = Field.getLastSquare(this.body)
+
     const added = Snake.getMoveSquare(this.direction, last, this.field.fieldSize)
+
+    if (Snake.hasCollapsed(this.body, added)) {
+      this.onCollapse()
+    }
     this.body.push(added)
 
     this.field.clearSquare(removed)
     this.field.paintSquare(added, COLORS.snake)
+  }
+
+  private static hasCollapsed(body: Vector[], move: Vector): boolean {
+    return body.some((square) => Vector.areEqual(square, move))
   }
 
   private static getInitialBody(fieldSize: Vector, direction: Direction): Vector[] {
