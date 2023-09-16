@@ -1,4 +1,4 @@
-import { Color } from '../config'
+import { COLORS, Color } from '../config'
 import { Canvas } from './canvas'
 import { Vector } from './vector'
 
@@ -9,14 +9,18 @@ export class Square {
     private readonly position: Vector,
   ) {}
 
-  public render(color: string) {
-    this.canvas.ctx.strokeStyle = color
+  private paintBorder() {
+    this.canvas.ctx.strokeStyle = COLORS.grid
     this.canvas.ctx.strokeRect(
       this.size * this.position.x,
       this.size * this.position.y,
       this.size,
       this.size,
     )
+  }
+
+  public initRender() {
+    this.paintBorder()
   }
 
   public paint(color: Color) {
@@ -27,5 +31,15 @@ export class Square {
       this.size,
       this.size,
     )
+  }
+
+  public clear() {
+    this.canvas.ctx.clearRect(
+      this.size * this.position.x,
+      this.size * this.position.y,
+      this.size,
+      this.size,
+    )
+    this.paintBorder()
   }
 }

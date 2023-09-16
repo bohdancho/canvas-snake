@@ -17,7 +17,7 @@ export class Field {
   public initRender() {
     this.squares.forEach((row) =>
       row.forEach((square) => {
-        square.render(COLORS.grid)
+        square.initRender()
       }),
     )
 
@@ -32,6 +32,10 @@ export class Field {
 
   public paintSquare(position: Vector, color: Color) {
     this.squares[position.y][position.x].paint(color)
+  }
+
+  public clearSquare(position: Vector) {
+    this.squares[position.y][position.x].clear()
   }
 
   private static getFieldSize(canvas: Canvas, squareSize: number): Vector {

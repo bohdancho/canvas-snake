@@ -25,9 +25,13 @@ export class Snake {
 
   public move() {
     const removed = this.body.shift()
+    if (!removed) throw Error('Snake move error')
     const last = Snake.getLastSquare(this.body)
     const added = Snake.getConnectedSquare(this.direction, last)
     this.body.push(added)
+
+    this.field.clearSquare(removed)
+    this.field.paintSquare(added, COLORS.snake)
   }
 
   private static getRandomBody(fieldSize: Vector, direction: Direction): Vector[] {
