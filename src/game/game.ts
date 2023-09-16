@@ -1,13 +1,16 @@
 import { Canvas } from './canvas'
+import { Field } from './field'
 
 export class Game {
-  private canvas: Canvas
+  private static readonly TILE_SIZE = 20
+  private readonly field: Field
 
   constructor(canvasElem: HTMLCanvasElement) {
-    this.canvas = new Canvas(canvasElem)
+    const canvas = new Canvas(canvasElem)
+    this.field = new Field(canvas)
   }
 
   public init(): void {
-    this.canvas.drawGreenRect()
+    this.field.drawField()
   }
 }
