@@ -2,7 +2,7 @@ import { Canvas } from './canvas'
 import { Vector } from './vector'
 
 export class Square {
-  public color = 'blue'
+  public color = 'grey'
 
   constructor(
     private readonly canvas: Canvas,
@@ -11,7 +11,7 @@ export class Square {
   ) {}
 
   public render() {
-    this.canvas.ctx.fillStyle = this.color
+    this.canvas.ctx.strokeStyle = this.color
     this.canvas.ctx.strokeRect(
       this.size * this.position.x,
       this.size * this.position.y,
