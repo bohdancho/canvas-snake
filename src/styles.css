@@ -1,5 +1,5 @@
 canvas {
-  border: 1px solid red;
+  background: #374151;
   width: 90vw;
   height: 90vh;
 }
@@ -9,4 +9,5 @@ canvas {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background: #0f172a;
 }

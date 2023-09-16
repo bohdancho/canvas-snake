@@ -1,24 +1,13 @@
+import { Canvas } from './canvas'
+
 export class Game {
-  private width: number
-  private height: number
-  private ctx: CanvasRenderingContext2D
+  private canvas: Canvas
+
   constructor(canvas: HTMLCanvasElement) {
-    this.ctx = Game.getContext(canvas)
-
-    const { width, height } = canvas.getBoundingClientRect()
-    this.width = width
-    this.height = height
-  }
-  public init() {
-    this.ctx.fillStyle = 'green'
-    this.ctx.fillRect(0, 0, this.width, this.height)
+    this.canvas = new Canvas(canvas)
   }
 
-  private static getContext(canvas: HTMLCanvasElement) {
-    const ctx = canvas.getContext('2d')
-    if (!ctx) {
-      throw Error('No ctx')
-    }
-    return ctx
+  public init(): void {
+    this.canvas.drawGreenRect()
   }
 }
