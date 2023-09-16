@@ -11,7 +11,7 @@ export class Snake {
 
   constructor(private readonly field: Field) {
     const direction = randomDirection()
-    const body = Snake.getRandomBody(field.fieldSize, direction)
+    const body = Snake.getInitialBody(field.fieldSize, direction)
 
     this.direction = direction
     this.body = body
@@ -27,14 +27,14 @@ export class Snake {
     const removed = this.body.shift()
     if (!removed) throw Error('Snake move error')
     const last = Snake.getLastSquare(this.body)
-    const added = Snake.getConnectedSquare(this.direction, last)
+    const added = Snake.getMoveSquare(this.direction, last, this.field.fieldSize)
     this.body.push(added)
 
     this.field.clearSquare(removed)
     this.field.paintSquare(added, COLORS.snake)
   }
 
-  private static getRandomBody(fieldSize: Vector, direction: Direction): Vector[] {
+  private static getInitialBody(fieldSize: Vector, direction: Direction): Vector[] {
     const startX = randomInteger(0, fieldSize.x - 1)
     const startY = randomInteger(0, fieldSize.y - 1)
 
@@ -46,7 +46,7 @@ export class Snake {
     }
 
     if (!Snake.isBodyValid(fieldSize, body)) {
-      return Snake.getRandomBody(fieldSize, direction)
+      return Snake.getInitialBody(fieldSize, direction)
     }
     return body
   }
@@ -55,6 +55,27 @@ export class Snake {
     const { x, y } = Snake.getLastSquare(body)
 
     return x >= 0 && y >= 0 && x < fieldSize.x && y < fieldSize.y
+  }
+
+  private static getMoveSquare(
+    direction: Direction,
+    prev: Vector,
+    fieldSize: Vector,
+  ): Vector {
+    const square = this.getConnectedSquare(direction, prev)
+    const validPosition = { x: square.x, y: square.y }
+
+    const axes = ['x', 'y'] as const
+    axes.forEach((axis) => {
+      if (square[axis] >= fieldSize[axis]) {
+        validPosition[axis] = 0
+      }
+      if (square[axis] < 0) {
+        validPosition[axis] = fieldSize[axis] - 1
+      }
+    })
+
+    return new Vector(validPosition.x, validPosition.y)
   }
 
   private static getConnectedSquare(direction: Direction, prev: Vector): Vector {

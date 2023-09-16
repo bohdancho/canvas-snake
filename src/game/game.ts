@@ -19,6 +19,6 @@ export class Game {
     this.field.initRender()
     this.snake.initRender()
 
-    setInterval(() => this.snake.move(), 1000)
+    setInterval(() => this.snake.move(), 500)
   }
 }
