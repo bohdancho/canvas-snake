@@ -1,3 +1,4 @@
+import { SQUARE_SIZE_PX } from '../config'
 import { Canvas } from './canvas'
 import { Square } from './square'
 import { Vector } from './vector'
@@ -6,11 +7,11 @@ export class Field {
   public readonly fieldSize: Vector
   private readonly squares: Square[][]
 
-  constructor(private readonly canvas: Canvas, private readonly squareSizePx: number) {
-    const fieldSize = Field.getFieldSize(canvas, squareSizePx)
+  constructor(private readonly canvas: Canvas) {
+    const fieldSize = Field.getFieldSize(canvas, SQUARE_SIZE_PX)
 
     this.fieldSize = fieldSize
-    this.squares = Field.getInitSquares(fieldSize, canvas, squareSizePx)
+    this.squares = Field.getInitSquares(fieldSize, canvas, SQUARE_SIZE_PX)
   }
 
   public render() {
@@ -23,8 +24,8 @@ export class Field {
     this.canvas.ctx.strokeRect(
       0,
       0,
-      this.fieldSize.x * this.squareSizePx,
-      this.fieldSize.y * this.squareSizePx,
+      this.fieldSize.x * SQUARE_SIZE_PX,
+      this.fieldSize.y * SQUARE_SIZE_PX,
     )
   }
 
@@ -38,12 +39,16 @@ export class Field {
     return new Vector(width, height)
   }
 
-  private static getInitSquares(fieldSize: Vector, canvas: Canvas, squareSizePx: number) {
+  private static getInitSquares(
+    fieldSize: Vector,
+    canvas: Canvas,
+    SQUARE_SIZE_PX: number,
+  ) {
     const squares: Square[][] = []
     for (let y = 0; y < fieldSize.y; y++) {
       squares[y] = []
       for (let x = 0; x < fieldSize.x; x++) {
-        squares[y][x] = new Square(canvas, squareSizePx, new Vector(x, y))
+        squares[y][x] = new Square(canvas, SQUARE_SIZE_PX, new Vector(x, y))
       }
     }
     return squares
