@@ -12,7 +12,7 @@ export class Square {
 
   public render() {
     this.canvas.ctx.fillStyle = this.color
-    this.canvas.ctx.fillRect(
+    this.canvas.ctx.strokeRect(
       this.size * this.position.x,
       this.size * this.position.y,
       this.size,

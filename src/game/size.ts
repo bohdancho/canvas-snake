@@ -1,4 +1,4 @@
-export class Size {
+export class SizePx {
   public readonly width: number
   public readonly height: number
   constructor(width: number, height: number) {
