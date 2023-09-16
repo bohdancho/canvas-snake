@@ -12,3 +12,7 @@ export function randomDirection(): Direction {
   const randomIndex = randomInteger(0, directions.length - 1)
   return directions[randomIndex]
 }
+
+export function isValidDirectionChange(a: Direction, b: Direction) {
+  return a[0] !== b[0]
+}

@@ -5,14 +5,14 @@ import { Field } from './field'
 import { Vector } from './vector'
 
 export class Snake {
-  private _direction: Direction
+  public direction: Direction
   private body: Vector[]
 
   constructor(private readonly field: Field) {
     const direction = randomDirection()
     const body = Snake.getInitialBody(field.fieldSize, direction)
 
-    this._direction = direction
+    this.direction = direction
     this.body = body
   }
 
@@ -26,15 +26,11 @@ export class Snake {
     const removed = this.body.shift()
     if (!removed) throw Error('Snake move error')
     const last = Field.getLastSquare(this.body)
-    const added = Snake.getMoveSquare(this._direction, last, this.field.fieldSize)
+    const added = Snake.getMoveSquare(this.direction, last, this.field.fieldSize)
     this.body.push(added)
 
     this.field.clearSquare(removed)
     this.field.paintSquare(added, COLORS.snake)
-  }
-
-  public set direction(_direction: Direction) {
-    // if (direction === )
   }
 
   private static getInitialBody(fieldSize: Vector, direction: Direction): Vector[] {

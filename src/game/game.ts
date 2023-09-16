@@ -1,5 +1,5 @@
-import { Direction } from '../enums/direction.enum'
 import { Canvas } from './canvas'
+import { Direction, isValidDirectionChange } from './direction'
 import { Field } from './field'
 import { Keyboard } from './keyboard'
 import { Snake } from './snake'
@@ -8,6 +8,7 @@ export class Game {
   private readonly field: Field
   private readonly snake: Snake
   private readonly keyboard: Keyboard
+  private tickInterval?: ReturnType<typeof setInterval>
 
   constructor(canvasElem: HTMLCanvasElement) {
     const canvas = new Canvas(canvasElem)
@@ -24,13 +25,26 @@ export class Game {
     this.field.initRender()
     this.snake.initRender()
     this.keyboard.listen()
+    this.startSnake()
+  }
 
-    setInterval(() => this.snake.move(), 500)
+  private restartSnake() {
+    clearInterval(this.tickInterval)
+    this.startSnake()
+  }
+
+  private startSnake() {
+    this.tickInterval = setInterval(() => this.snake.move(), 500)
   }
 
   private readonly actions = {
     changeDirection: (direction: Direction) => {
-      console.log(direction)
+      if (!isValidDirectionChange(this.snake.direction, direction)) {
+        return
+      }
+      this.snake.direction = direction
+      this.snake.move()
+      this.restartSnake()
     },
   }
 }
