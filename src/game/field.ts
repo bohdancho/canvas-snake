@@ -4,7 +4,10 @@ import { Vector } from './vector'
 
 export class Field {
   private readonly squares: Array<Array<Square>>
-  constructor(private readonly canvas: Canvas, private readonly squareSize: number) {
+  constructor(
+    private readonly canvas: Canvas,
+    private readonly squareSize: number,
+  ) {
     this.squares = [[new Square(canvas, squareSize, new Vector(0, 0))]]
   }
 
