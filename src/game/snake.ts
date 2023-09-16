@@ -6,10 +6,15 @@ import { Field } from './field'
 import { Vector } from './vector'
 
 export class Snake {
+  private direction: Direction
   private readonly body: Vector[]
 
   constructor(private readonly field: Field) {
-    this.body = Snake.getRandomBody(field.fieldSize)
+    const direction = randomDirection()
+    const body = Snake.getRandomBody(field.fieldSize, direction)
+
+    this.direction = direction
+    this.body = body
   }
 
   public render() {
@@ -18,12 +23,11 @@ export class Snake {
     })
   }
 
-  private static getRandomBody(fieldSize: Vector): Vector[] {
+  private static getRandomBody(fieldSize: Vector, direction: Direction): Vector[] {
     const startX = randomInteger(0, fieldSize.x - 1)
     const startY = randomInteger(0, fieldSize.y - 1)
 
     const body = [new Vector(startX, startY)]
-    const direction = randomDirection()
     for (let i = 1; i < SNAKE_INIT_SIZE; i++) {
       const prev = body.at(-1)
       if (!prev) throw Error('Snake render error')
@@ -31,7 +35,7 @@ export class Snake {
     }
 
     if (!Snake.isBodyValid(fieldSize, body)) {
-      return Snake.getRandomBody(fieldSize)
+      return Snake.getRandomBody(fieldSize, direction)
     }
     return body
   }
