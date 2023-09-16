@@ -3,8 +3,8 @@ import { Square } from './square'
 import { Vector } from './vector'
 
 export class Field {
-  private readonly fieldSize: Vector
-  private readonly squares: Array<Array<Square>>
+  public readonly fieldSize: Vector
+  private readonly squares: Square[][]
 
   constructor(private readonly canvas: Canvas, private readonly squareSizePx: number) {
     const fieldSize = Field.getFieldSize(canvas, squareSizePx)
@@ -26,9 +26,6 @@ export class Field {
       this.fieldSize.x * this.squareSizePx,
       this.fieldSize.y * this.squareSizePx,
     )
-
-    this.paintSquare(new Vector(25, 22), 'red')
-    this.paintSquare(new Vector(0, 1), 'blue')
   }
 
   public paintSquare(position: Vector, color: string) {
@@ -42,7 +39,7 @@ export class Field {
   }
 
   private static getInitSquares(fieldSize: Vector, canvas: Canvas, squareSizePx: number) {
-    const squares: Array<Array<Square>> = []
+    const squares: Square[][] = []
     for (let y = 0; y < fieldSize.y; y++) {
       squares[y] = []
       for (let x = 0; x < fieldSize.x; x++) {
