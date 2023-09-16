@@ -14,36 +14,40 @@ export class SnakeCollapcedException extends Error {
 
 export class Snake {
   public direction: Direction
-  private body: Vector[]
+  private _body: Vector[]
 
   constructor(private readonly field: Field) {
     const direction = randomDirection()
     const body = Snake.getInitialBody(field.fieldSize, direction)
 
     this.direction = direction
-    this.body = body
+    this._body = body
   }
 
   public initRender() {
-    this.body.forEach((square) => {
+    this._body.forEach((square) => {
       return this.field.paintSquare(square, COLORS.snake)
     })
   }
 
   public move() {
-    const removed = this.body.shift()
+    const removed = this._body.shift()
     if (!removed) throw Error('Snake move error')
-    const last = Field.getLastSquare(this.body)
+    const last = Field.getLastSquare(this._body)
 
     const added = Snake.getMoveSquare(this.direction, last, this.field.fieldSize)
 
-    if (Snake.hasCollapsed(this.body, added)) {
+    if (Snake.hasCollapsed(this._body, added)) {
       throw new SnakeCollapcedException()
     }
-    this.body.push(added)
+    this._body.push(added)
 
     this.field.clearSquare(removed)
     this.field.paintSquare(added, COLORS.snake)
+  }
+
+  public get body() {
+    return this._body
   }
 
   private static hasCollapsed(body: Vector[], move: Vector): boolean {

@@ -1,25 +1,29 @@
 import { Canvas } from './canvas'
 import { Direction, isValidDirectionChange } from './direction'
 import { Field } from './field'
+import { Food } from './food'
 import { Keyboard } from './keyboard'
 import { Snake, SnakeCollapcedException } from './snake'
+import { Vector } from './vector'
 
 export class Game {
   private readonly field: Field
   private readonly snake: Snake
   private readonly keyboard: Keyboard
+  private food: Food
   private tickInterval?: ReturnType<typeof setInterval>
   private lost = false
 
   constructor(canvasElem: HTMLCanvasElement) {
     const canvas = new Canvas(canvasElem)
     const field = new Field(canvas)
-    const snake = new Snake(field)
-    const keyboard = new Keyboard(this.actions)
-
     this.field = field
+    const snake = new Snake(field)
     this.snake = snake
-    this.keyboard = keyboard
+    const food = this.generateFood()
+    this.food = food
+
+    this.keyboard = new Keyboard(this.actions)
   }
 
   public start(): void {
@@ -27,6 +31,16 @@ export class Game {
     this.snake.initRender()
     this.startSnake()
     this.keyboard.listen()
+  }
+
+  private generateFood(): Food {
+    return new Food(this.field, this.randomFreePosition())
+  }
+
+  private randomFreePosition(): Vector {
+    const position = Vector.random(this.field.fieldSize)
+    const conflict = this.snake.body.some((square) => Vector.areEqual(position, square))
+    return conflict ? this.randomFreePosition() : position
   }
 
   private restartSnake() {
