@@ -1,4 +1,4 @@
-import { Direction } from '../enums/direction.enum'
+import { Direction } from './direction'
 
 const KEY_DIRECTION_MAP = {
   ArrowLeft: Direction.x_neg,

@@ -1,5 +1,6 @@
 import { COLORS, Color, SQUARE_SIZE_PX } from '../config'
 import { Canvas } from './canvas'
+import { Direction } from './direction'
 import { Square } from './square'
 import { Vector } from './vector'
 
@@ -57,5 +58,31 @@ export class Field {
       }
     }
     return squares
+  }
+
+  public static getConnectedSquare(direction: Direction, prev: Vector): Vector {
+    let { x, y } = prev
+    switch (direction) {
+      case Direction.x_pos:
+        x++
+        break
+      case Direction.x_neg:
+        x--
+        break
+      case Direction.y_pos:
+        y++
+        break
+      case Direction.y_neg:
+        y--
+        break
+    }
+
+    return new Vector(x, y)
+  }
+
+  public static getLastSquare(body: Vector[]): Vector {
+    const last = body.at(-1)
+    if (!last) throw Error('Snake render error')
+    return last
   }
 }
