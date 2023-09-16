@@ -8,7 +8,7 @@ export class Canvas {
     this.ctx = Canvas.getContext(elem)
 
     const { width, height } = elem.getBoundingClientRect()
-    this.size = new Size({ width, height })
+    this.size = new Size(width, height)
   }
 
   private static getContext(elem: HTMLCanvasElement): CanvasRenderingContext2D {

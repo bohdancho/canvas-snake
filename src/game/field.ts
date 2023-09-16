@@ -1,7 +1,8 @@
 import { Canvas } from './canvas'
+import { Size } from './size'
 
 export class Field {
-  constructor(private readonly canvas: Canvas) {}
+  constructor(private readonly canvas: Canvas, private readonly tileSize: Size) {}
 
   public drawField() {
     this.canvas.ctx.fillStyle = 'green'
