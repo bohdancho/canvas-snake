@@ -13,6 +13,7 @@ export class Square {
   ) {}
 
   public update(entity: Entity | null) {
+    if (this._entity?.onDestroy) this._entity.onDestroy()
     this._entity = entity
   }
 

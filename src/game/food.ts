@@ -6,11 +6,19 @@ import { Vector } from './vector'
 export class Food implements Entity {
   public readonly color = COLORS.food
 
-  constructor(private readonly field: Field, private readonly position: Vector) {
+  constructor(
+    private readonly field: Field,
+    private readonly position: Vector,
+    private readonly onEaten: () => void,
+  ) {
     this.field.updateSquare(position, this)
   }
 
   public initRender() {
     this.field.renderSquare(this.position)
+  }
+
+  public onDestroy() {
+    this.onEaten()
   }
 }
