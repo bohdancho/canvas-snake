@@ -37,7 +37,11 @@ export class Game {
   }
 
   private generateFood(): Food {
-    return new Food(this.field, this.field.getRandomFreePosition(), this.actions.ateFood)
+    return new Food(
+      this.field,
+      this.field.getRandomFreePosition(),
+      this.actions.foodEaten,
+    )
   }
 
   private restartSnake() {
@@ -71,7 +75,7 @@ export class Game {
         }
       }
     },
-    ateFood: () => {
+    foodEaten: () => {
       this.food = this.generateFood()
       this.food.initRender()
     },

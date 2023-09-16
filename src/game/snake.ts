@@ -3,6 +3,7 @@ import { randomInteger } from '../utils/randomInteger'
 import { Direction, randomDirection } from './direction'
 import { Entity } from './entity'
 import { Field } from './field'
+import { Food } from './food'
 import { Vector } from './vector'
 
 export class SnakeCollapcedException extends Error {
@@ -34,25 +35,33 @@ export class Snake implements Entity {
   }
 
   public move() {
-    const removed = this.body.shift()
-    if (!removed) throw Error('Snake move error')
     const last = Field.getLastSquare(this.body)
+    const move = Snake.getMoveSquare(this.direction, last, this.field.fieldSize)
 
-    const added = Snake.getMoveSquare(this.direction, last, this.field.fieldSize)
-
-    if (this.willCollapse(added)) {
+    const willEat = this.willEat(move)
+    if (this.willCollapse(move)) {
       throw new SnakeCollapcedException()
     }
-    this.body.push(added)
 
-    this.field.updateSquare(added, this)
+    this.body.push(move)
+    this.field.updateSquare(move, this)
+    this.field.renderSquare(move)
+
+    if (willEat) {
+      return
+    }
+    const removed = this.body.shift()
+    if (!removed) throw Error('Snake move error')
     this.field.updateSquare(removed, null)
-    this.field.renderSquare(added)
     this.field.renderSquare(removed)
   }
 
   private willCollapse(move: Vector): boolean {
     return this.field.getSquare(move).entity === this
+  }
+
+  private willEat(move: Vector): boolean {
+    return this.field.getSquare(move).entity instanceof Food
   }
 
   private static getInitialBody(fieldSize: Vector, direction: Direction): Vector[] {
