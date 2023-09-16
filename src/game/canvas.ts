@@ -8,6 +8,8 @@ export class Canvas {
     this.ctx = Canvas.getContext(elem)
 
     const { width, height } = elem.getBoundingClientRect()
+    elem.width = width
+    elem.height = height
     this.size = new Size(width, height)
   }
 

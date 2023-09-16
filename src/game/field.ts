@@ -1,11 +1,20 @@
 import { Canvas } from './canvas'
-import { Size } from './size'
+import { Square } from './square'
+import { Vector } from './vector'
 
 export class Field {
-  constructor(private readonly canvas: Canvas, private readonly tileSize: Size) {}
+  private readonly squares: Array<Array<Square>>
+  constructor(private readonly canvas: Canvas, private readonly squareSize: number) {
+    this.squares = [[new Square(canvas, squareSize, new Vector(0, 0))]]
+  }
 
-  public drawField() {
-    this.canvas.ctx.fillStyle = 'green'
-    this.canvas.ctx.fillRect(0, 0, this.canvas.size.width, this.canvas.size.height)
+  public render() {
+    this.canvas.ctx.setTransform(1, 0, 0, 1, 0, 0)
+
+    this.squares.forEach((row) =>
+      row.forEach((square) => {
+        square.render()
+      }),
+    )
   }
 }
