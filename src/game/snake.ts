@@ -35,21 +35,26 @@ export class Snake implements Entity {
   }
 
   public move() {
-    const last = Field.getLastSquare(this.body)
-    const move = Snake.getMoveSquare(this.direction, last, this.field.fieldSize)
+    const move = this.getMove()
 
     const willEat = this.willEat(move)
     if (this.willCollapse(move)) {
       throw new SnakeCollapcedException()
     }
 
+    this.grow(move)
+    if (!willEat) {
+      this.removeTail()
+    }
+  }
+
+  private grow(move: Vector): void {
     this.body.push(move)
     this.field.updateSquare(move, this)
     this.field.renderSquare(move)
+  }
 
-    if (willEat) {
-      return
-    }
+  private removeTail(): void {
     const removed = this.body.shift()
     if (!removed) throw Error('Snake move error')
     this.field.updateSquare(removed, null)
@@ -62,6 +67,24 @@ export class Snake implements Entity {
 
   private willEat(move: Vector): boolean {
     return this.field.getSquare(move).entity instanceof Food
+  }
+
+  private getMove(): Vector {
+    const last = Field.getLastSquare(this.body)
+    const square = Field.getConnectedSquare(this.direction, last)
+    const validPosition = { x: square.x, y: square.y }
+
+    const axes = ['x', 'y'] as const
+    axes.forEach((axis) => {
+      if (square[axis] >= this.field.fieldSize[axis]) {
+        validPosition[axis] = 0
+      }
+      if (square[axis] < 0) {
+        validPosition[axis] = this.field.fieldSize[axis] - 1
+      }
+    })
+
+    return new Vector(validPosition.x, validPosition.y)
   }
 
   private static getInitialBody(fieldSize: Vector, direction: Direction): Vector[] {
@@ -84,26 +107,5 @@ export class Snake implements Entity {
     const { x, y } = Field.getLastSquare(body)
 
     return x >= 0 && y >= 0 && x < fieldSize.x && y < fieldSize.y
-  }
-
-  private static getMoveSquare(
-    direction: Direction,
-    prev: Vector,
-    fieldSize: Vector,
-  ): Vector {
-    const square = Field.getConnectedSquare(direction, prev)
-    const validPosition = { x: square.x, y: square.y }
-
-    const axes = ['x', 'y'] as const
-    axes.forEach((axis) => {
-      if (square[axis] >= fieldSize[axis]) {
-        validPosition[axis] = 0
-      }
-      if (square[axis] < 0) {
-        validPosition[axis] = fieldSize[axis] - 1
-      }
-    })
-
-    return new Vector(validPosition.x, validPosition.y)
   }
 }
