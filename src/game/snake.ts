@@ -1,4 +1,4 @@
-import { SNAKE_INIT_SIZE } from '../config'
+import { COLORS, SNAKE_INIT_SIZE } from '../config'
 import { Direction } from '../enums/direction.enum'
 import { randomDirection } from '../utils/randomDirection'
 import { randomInteger } from '../utils/randomInteger'
@@ -19,7 +19,7 @@ export class Snake {
 
   public initRender() {
     this.body.forEach((square) => {
-      return this.field.paintSquare(square, 'blue')
+      return this.field.paintSquare(square, COLORS.snake)
     })
   }
 

@@ -1,4 +1,4 @@
-import { SQUARE_SIZE_PX } from '../config'
+import { COLORS, Color, SQUARE_SIZE_PX } from '../config'
 import { Canvas } from './canvas'
 import { Square } from './square'
 import { Vector } from './vector'
@@ -17,10 +17,11 @@ export class Field {
   public initRender() {
     this.squares.forEach((row) =>
       row.forEach((square) => {
-        square.render('grey')
+        square.render(COLORS.grid)
       }),
     )
 
+    this.canvas.ctx.strokeStyle = COLORS.grid
     this.canvas.ctx.strokeRect(
       0,
       0,
@@ -29,7 +30,7 @@ export class Field {
     )
   }
 
-  public paintSquare(position: Vector, color: string) {
+  public paintSquare(position: Vector, color: Color) {
     this.squares[position.y][position.x].paint(color)
   }
 

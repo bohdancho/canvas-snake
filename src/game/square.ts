@@ -1,3 +1,4 @@
+import { Color } from '../config'
 import { Canvas } from './canvas'
 import { Vector } from './vector'
 
@@ -18,7 +19,7 @@ export class Square {
     )
   }
 
-  public paint(color: string) {
+  public paint(color: Color) {
     this.canvas.ctx.fillStyle = color
     this.canvas.ctx.fillRect(
       this.size * this.position.x,
