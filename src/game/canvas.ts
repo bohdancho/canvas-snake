@@ -3,10 +3,10 @@ export class Canvas {
   private height: number
   private ctx: CanvasRenderingContext2D
 
-  constructor(canvas: HTMLCanvasElement) {
-    this.ctx = Canvas.getContext(canvas)
+  constructor(elem: HTMLCanvasElement) {
+    this.ctx = Canvas.getContext(elem)
 
-    const { width, height } = canvas.getBoundingClientRect()
+    const { width, height } = elem.getBoundingClientRect()
     this.width = width
     this.height = height
   }
@@ -16,8 +16,8 @@ export class Canvas {
     this.ctx.fillRect(0, 0, this.width, this.height)
   }
 
-  private static getContext(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
-    const ctx = canvas.getContext('2d')
+  private static getContext(elem: HTMLCanvasElement): CanvasRenderingContext2D {
+    const ctx = elem.getContext('2d')
     if (!ctx) {
       throw Error('No ctx')
     }

@@ -3,8 +3,8 @@ import { Canvas } from './canvas'
 export class Game {
   private canvas: Canvas
 
-  constructor(canvas: HTMLCanvasElement) {
-    this.canvas = new Canvas(canvas)
+  constructor(canvasElem: HTMLCanvasElement) {
+    this.canvas = new Canvas(canvasElem)
   }
 
   public init(): void {
