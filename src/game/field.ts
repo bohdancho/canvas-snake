@@ -14,7 +14,7 @@ export class Field {
     this.squares = Field.getInitSquares(fieldSize, canvas, SQUARE_SIZE_PX)
   }
 
-  public render() {
+  public initRender() {
     this.squares.forEach((row) =>
       row.forEach((square) => {
         square.render('grey')

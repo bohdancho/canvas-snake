@@ -7,7 +7,7 @@ import { Vector } from './vector'
 
 export class Snake {
   private direction: Direction
-  private readonly body: Vector[]
+  private body: Vector[]
 
   constructor(private readonly field: Field) {
     const direction = randomDirection()
@@ -17,10 +17,17 @@ export class Snake {
     this.body = body
   }
 
-  public render() {
+  public initRender() {
     this.body.forEach((square) => {
       return this.field.paintSquare(square, 'blue')
     })
+  }
+
+  public move() {
+    const removed = this.body.shift()
+    const last = Snake.getLastSquare(this.body)
+    const added = Snake.getConnectedSquare(this.direction, last)
+    this.body.push(added)
   }
 
   private static getRandomBody(fieldSize: Vector, direction: Direction): Vector[] {
@@ -41,9 +48,7 @@ export class Snake {
   }
 
   private static isBodyValid(fieldSize: Vector, body: Vector[]): boolean {
-    const last = body.at(-1)
-    if (!last) throw Error('Snake render error')
-    const { x, y } = last
+    const { x, y } = Snake.getLastSquare(body)
 
     return x >= 0 && y >= 0 && x < fieldSize.x && y < fieldSize.y
   }
@@ -66,5 +71,11 @@ export class Snake {
     }
 
     return new Vector(x, y)
+  }
+
+  private static getLastSquare(body: Vector[]): Vector {
+    const last = body.at(-1)
+    if (!last) throw Error('Snake render error')
+    return last
   }
 }

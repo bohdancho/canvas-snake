@@ -16,7 +16,7 @@ export class Game {
   }
 
   public init(): void {
-    this.field.render()
-    this.snake.render()
+    this.field.initRender()
+    this.snake.initRender()
   }
 }
