@@ -1,4 +1,4 @@
-import { Direction } from '../game/direction'
+import { Direction } from '../enums/direction.enum'
 import { randomInteger } from './randomInteger'
 
 export function randomDirection(): Direction {

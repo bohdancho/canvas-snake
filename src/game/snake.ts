@@ -1,7 +1,7 @@
 import { SNAKE_INIT_SIZE } from '../config'
+import { Direction } from '../enums/direction.enum'
 import { randomDirection } from '../utils/randomDirection'
 import { randomInteger } from '../utils/randomInteger'
-import { Direction } from './direction'
 import { Field } from './field'
 import { Vector } from './vector'
 
