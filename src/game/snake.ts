@@ -1,4 +1,4 @@
-import { COLORS, SNAKE_INIT_SIZE, SNAKE_MOVE_FREQUENCY } from '../config'
+import { COLORS, SNAKE_INIT_LENGTH, SNAKE_MOVE_FREQUENCY } from '../config'
 import { randomInteger } from '../utils/randomInteger'
 import { Direction, randomDirection } from './direction'
 import { Entity } from './entity'
@@ -9,7 +9,7 @@ import { Vector } from './vector'
 export class Snake implements Entity {
   public readonly color = COLORS.snake
   private _direction: Direction
-  private newDirection?: Direction
+  private requestedDirection?: Direction
   private body: Vector[]
   private moveInterval?: ReturnType<typeof setInterval>
 
@@ -31,9 +31,9 @@ export class Snake implements Entity {
   }
 
   public move(): void {
-    if (this.newDirection) {
-      this._direction = this.newDirection
-      this.newDirection = undefined
+    if (this.requestedDirection) {
+      this._direction = this.requestedDirection
+      this.requestedDirection = undefined
     }
 
     const move = this.getMove()
@@ -56,7 +56,7 @@ export class Snake implements Entity {
   }
 
   public set direction(direction: Direction) {
-    this.newDirection = direction
+    this.requestedDirection = direction
   }
 
   private grow(move: Vector): void {
@@ -103,7 +103,7 @@ export class Snake implements Entity {
     const startY = randomInteger(0, fieldSize.y - 1)
 
     const body = [new Vector(startX, startY)]
-    for (let i = 1; i < SNAKE_INIT_SIZE; i++) {
+    for (let i = 1; i < SNAKE_INIT_LENGTH; i++) {
       const prev = Field.getLastSquare(body)
       body.push(Field.getConnectedSquare(direction, prev))
     }
