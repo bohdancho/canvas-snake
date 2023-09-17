@@ -12,12 +12,12 @@ export class SnakeBody {
     initLength: number,
     initDirection: Direction,
   ) {
-    this.state = SnakeBody.getInitialState(initDirection, initLength, field.length)
-    this.state.forEach((position) => field.updateSquare(position, snake))
+    this.state = SnakeBody.getInitialState(this.field, initDirection, initLength)
+    this.state.forEach((position) => this.field.updateSquare(position, snake))
   }
 
   public grow(validDirection: Direction): { event: null | 'ateFood' | 'collapsed' } {
-    const last = Field.getLastSquare(this.state)
+    const last = SnakeBody.getHead(this.state)
     const location = Field.getConnectedSquare(validDirection, last)
     const transpiledLocation = SnakeBody.transpileLocation(location, this.field.length)
 
@@ -57,22 +57,24 @@ export class SnakeBody {
     return new Vector(validPosition.x, validPosition.y)
   }
 
-  private static getInitialState(
-    direction: Direction,
-    length: number,
-    fieldLength: number,
-  ): Vector[] {
-    const start = Vector.random(fieldLength)
+  private static getInitialState(field: Field, direction: Direction, length: number): Vector[] {
+    const start = Vector.random(field.length)
 
     const body = [start]
     for (let i = 1; i < length; i++) {
-      const prev = Field.getLastSquare(body)
+      const prev = SnakeBody.getHead(body)
       body.push(Field.getConnectedSquare(direction, prev))
     }
 
-    if (!Field.isValidSquare(Field.getLastSquare(body), fieldLength)) {
-      return SnakeBody.getInitialState(direction, length, fieldLength)
+    if (!field.isValidLocation(SnakeBody.getHead(body))) {
+      return SnakeBody.getInitialState(field, direction, length)
     }
     return body
+  }
+
+  private static getHead(body: Vector[]): Vector {
+    const head = body.at(-1)
+    if (!head) throw Error('No snake head')
+    return head
   }
 }

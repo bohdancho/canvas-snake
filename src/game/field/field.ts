@@ -36,14 +36,20 @@ export class Field {
     square.render()
   }
 
-  public getRandomFreePosition(): Vector {
+  public getRandomFreeLocation(): Vector {
     const position = Vector.random(this.length)
     const isFree = this.getSquare(position).entity === null
-    return isFree ? position : this.getRandomFreePosition()
+    return isFree ? position : this.getRandomFreeLocation()
   }
 
   public getSquare(position: Vector): Square {
     return this.squares[position.y][position.x]
+  }
+
+  public isValidLocation(location: Vector): boolean {
+    const { x, y } = location
+
+    return x >= 0 && y >= 0 && x < this.length && y < this.length
   }
 
   private paintInitBorder(): void {
@@ -74,18 +80,6 @@ export class Field {
     }
 
     return new Vector(x, y)
-  }
-
-  public static getLastSquare(squares: Vector[]): Vector {
-    const last = squares.at(-1)
-    if (!last) throw Error('getLastSquare error')
-    return last
-  }
-
-  public static isValidSquare(square: Vector, fieldLength: number): boolean {
-    const { x, y } = square
-
-    return x >= 0 && y >= 0 && x < fieldLength && y < fieldLength
   }
 
   private static getSquareLengthPx(canvas: Canvas, fieldLength: number): number {

@@ -11,7 +11,7 @@ export class FoodManager {
   }
 
   private generateFood(): void {
-    this.food = new Food(this.field, this.field.getRandomFreePosition(), this.onEaten.bind(this))
+    this.food = new Food(this.field, this.field.getRandomFreeLocation(), this.onEaten.bind(this))
     this.food.initRender()
   }
 
