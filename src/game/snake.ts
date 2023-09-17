@@ -12,10 +12,12 @@ export class Snake implements Entity {
   private requestedDirection?: Direction
   private body: Vector[]
   private moveInterval?: ReturnType<typeof setInterval>
+  private static readonly INIT_LENGTH = SNAKE_INIT_LENGTH
+  private static readonly MOVE_FREQUENCY = SNAKE_MOVE_FREQUENCY
 
   constructor(private readonly field: Field, private readonly onCollapse: () => void) {
     const direction = randomDirection()
-    const body = Snake.getInitialBody(field.fieldSize, direction)
+    const body = Snake.getInitialBody(Field.LENGTH, direction)
     body.forEach((position) => field.updateSquare(position, this))
 
     this._direction = direction
@@ -23,7 +25,7 @@ export class Snake implements Entity {
   }
 
   public startSnake() {
-    this.moveInterval = setInterval(() => this.move(), SNAKE_MOVE_FREQUENCY)
+    this.moveInterval = setInterval(() => this.move(), Snake.MOVE_FREQUENCY)
   }
 
   private stopSnake() {
@@ -87,36 +89,36 @@ export class Snake implements Entity {
 
     const axes = ['x', 'y'] as const
     axes.forEach((axis) => {
-      if (square[axis] >= this.field.fieldSize[axis]) {
+      if (square[axis] >= Field.LENGTH) {
         validPosition[axis] = 0
       }
       if (square[axis] < 0) {
-        validPosition[axis] = this.field.fieldSize[axis] - 1
+        validPosition[axis] = Field.LENGTH - 1
       }
     })
 
     return new Vector(validPosition.x, validPosition.y)
   }
 
-  private static getInitialBody(fieldSize: Vector, direction: Direction): Vector[] {
-    const startX = randomInteger(0, fieldSize.x - 1)
-    const startY = randomInteger(0, fieldSize.y - 1)
+  private static getInitialBody(fieldLength: number, direction: Direction): Vector[] {
+    const startX = randomInteger(0, fieldLength - 1)
+    const startY = randomInteger(0, fieldLength - 1)
 
     const body = [new Vector(startX, startY)]
-    for (let i = 1; i < SNAKE_INIT_LENGTH; i++) {
+    for (let i = 1; i < Snake.INIT_LENGTH; i++) {
       const prev = Field.getLastSquare(body)
       body.push(Field.getConnectedSquare(direction, prev))
     }
 
-    if (!Snake.isBodyValid(fieldSize, body)) {
-      return Snake.getInitialBody(fieldSize, direction)
+    if (!Snake.isBodyValid(fieldLength, body)) {
+      return Snake.getInitialBody(fieldLength, direction)
     }
     return body
   }
 
-  private static isBodyValid(fieldSize: Vector, body: Vector[]): boolean {
+  private static isBodyValid(fieldLength: number, body: Vector[]): boolean {
     const { x, y } = Field.getLastSquare(body)
 
-    return x >= 0 && y >= 0 && x < fieldSize.x && y < fieldSize.y
+    return x >= 0 && y >= 0 && x < fieldLength && y < fieldLength
   }
 }

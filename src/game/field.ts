@@ -6,15 +6,15 @@ import { Square } from './square'
 import { Vector } from './vector'
 
 export class Field {
-  public readonly fieldSize: Vector = new Vector(FIELD_LENGTH, FIELD_LENGTH)
+  public static readonly LENGTH: number = FIELD_LENGTH
   private readonly squares: Square[][]
   private readonly squareLengthPx: number
 
   constructor(private readonly canvas: Canvas) {
-    const squareLengthPx = Field.getSquareLengthPx(canvas)
+    const squareLengthPx = Field.getSquareLengthPx(canvas, Field.LENGTH)
 
     this.squareLengthPx = squareLengthPx
-    this.squares = Field.getInitSquares(canvas, this.fieldSize, squareLengthPx)
+    this.squares = Field.getInitSquares(canvas, Field.LENGTH, squareLengthPx)
   }
 
   public initRender() {
@@ -28,8 +28,8 @@ export class Field {
     this.canvas.ctx.strokeRect(
       0,
       0,
-      FIELD_LENGTH * this.squareLengthPx,
-      FIELD_LENGTH * this.squareLengthPx,
+      Field.LENGTH * this.squareLengthPx,
+      Field.LENGTH * this.squareLengthPx,
     )
   }
 
@@ -44,7 +44,7 @@ export class Field {
   }
 
   public getRandomFreePosition(): Vector {
-    const position = Vector.random(this.fieldSize)
+    const position = Vector.random(Field.LENGTH)
     const conflict = this.getSquare(position).entity
     return conflict ? this.getRandomFreePosition() : position
   }
@@ -53,19 +53,19 @@ export class Field {
     return this.squares[position.y][position.x]
   }
 
-  private static getSquareLengthPx(canvas: Canvas) {
-    return Math.floor(canvas.sizePx / FIELD_LENGTH)
+  private static getSquareLengthPx(canvas: Canvas, fieldLength: number) {
+    return Math.floor(canvas.sizePx / fieldLength)
   }
 
   private static getInitSquares(
     canvas: Canvas,
-    fieldSize: Vector,
+    fieldLength: number,
     squareLengthPx: number,
   ) {
     const squares: Square[][] = []
-    for (let y = 0; y < fieldSize.y; y++) {
+    for (let y = 0; y < fieldLength; y++) {
       squares[y] = []
-      for (let x = 0; x < fieldSize.x; x++) {
+      for (let x = 0; x < fieldLength; x++) {
         squares[y][x] = new Square(canvas, squareLengthPx, new Vector(x, y))
       }
     }
