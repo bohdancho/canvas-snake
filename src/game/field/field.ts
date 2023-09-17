@@ -10,10 +10,10 @@ export class Field {
   private readonly squareLengthPx: number
 
   constructor(private readonly canvas: Canvas) {
-    const squareLengthPx = Field.getSquareLengthPx(canvas, this.length)
+    const squareLengthPx = Field.getSquareLengthPx(this.canvas, this.length)
 
     this.squareLengthPx = squareLengthPx
-    this.squares = Field.getInitialSquares(canvas, this.length, squareLengthPx, this.gridColor)
+    this.squares = Field.getInitialSquares(this.canvas, this.length, squareLengthPx, this.gridColor)
   }
 
   public initRender(): void {

@@ -10,15 +10,12 @@ export class Game {
 
   constructor(canvasElem: HTMLCanvasElement) {
     const canvas = new Canvas(canvasElem)
-    const field = new Field(canvas)
-    const snake = new Snake(field, this.onLoss)
-
-    this.field = field
-    this.snake = snake
+    this.field = new Field(canvas)
+    this.snake = new Snake(this.field, this.onLoss)
     this.keyboard = new Keyboard({
       changeDirection: (direction) => (this.snake.direction = direction),
     } as const)
-    this.foodManager = new FoodManager(field)
+    this.foodManager = new FoodManager(this.field)
   }
 
   public start(): void {
