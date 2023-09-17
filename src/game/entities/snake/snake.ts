@@ -7,8 +7,8 @@ import { SnakeMover } from './snakeMover'
 
 export class Snake implements Entity {
   public readonly color = config.colors.snake
-  private readonly mover: SnakeMover
   private readonly body: SnakeBody
+  private readonly mover: SnakeMover
 
   constructor(private readonly field: Field, private readonly onCollapse: () => void) {
     const initDirection = randomDirection()
