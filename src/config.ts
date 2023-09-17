@@ -1,10 +1,16 @@
-export const FIELD_LENGTH = 10
-export const SNAKE_INIT_LENGTH = 3
-export const SNAKE_MOVE_FREQUENCY = 200
-
-export const COLORS = {
-  grid: 'grey',
-  snake: 'blue',
-  food: 'red',
+export const config = {
+  field: {
+    length: 10,
+  },
+  snake: {
+    initLength: 3,
+    moveFrequencyMs: 200,
+  },
+  colors: {
+    grid: 'grey',
+    snake: 'blue',
+    food: 'red',
+  },
 } as const
-export type Color = (typeof COLORS)[keyof typeof COLORS]
+
+export type Color = (typeof config)['colors'][keyof (typeof config)['colors']]

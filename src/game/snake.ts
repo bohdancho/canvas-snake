@@ -1,4 +1,4 @@
-import { COLORS, SNAKE_INIT_LENGTH, SNAKE_MOVE_FREQUENCY } from '../config'
+import { config } from '../config'
 import { randomInteger } from '../utils/randomInteger'
 import { Direction, randomDirection } from './direction'
 import { Entity } from './entity'
@@ -7,13 +7,13 @@ import { Food } from './food'
 import { Vector } from './vector'
 
 export class Snake implements Entity {
-  public readonly color = COLORS.snake
+  public readonly color = config.colors.snake
   private _direction: Direction
   private requestedDirection?: Direction
   private body: Vector[]
   private moveInterval?: ReturnType<typeof setInterval>
-  private static readonly INIT_LENGTH = SNAKE_INIT_LENGTH
-  private static readonly MOVE_FREQUENCY = SNAKE_MOVE_FREQUENCY
+  private static readonly INIT_LENGTH = config.snake.initLength
+  private static readonly MOVE_FREQUENCY = config.snake.moveFrequencyMs
 
   constructor(private readonly field: Field, private readonly onCollapse: () => void) {
     const direction = randomDirection()

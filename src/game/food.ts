@@ -1,10 +1,10 @@
-import { COLORS } from '../config'
+import { config } from '../config'
 import { Entity } from './entity'
 import { Field } from './field'
 import { Vector } from './vector'
 
 export class Food implements Entity {
-  public readonly color = COLORS.food
+  public readonly color = config.colors.food
 
   constructor(
     private readonly field: Field,

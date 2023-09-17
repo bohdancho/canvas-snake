@@ -1,4 +1,4 @@
-import { COLORS, Color } from '../config'
+import { Color } from '../config'
 import { Canvas } from './canvas'
 import { Entity } from './entity'
 import { Vector } from './vector'
@@ -10,6 +10,7 @@ export class Square {
     private readonly canvas: Canvas,
     private readonly lengthPx: number,
     private readonly position: Vector,
+    private readonly borderColor: Color,
   ) {}
 
   public update(entity: Entity | null) {
@@ -50,7 +51,7 @@ export class Square {
   }
 
   private paintBorder() {
-    this.canvas.ctx.strokeStyle = COLORS.grid
+    this.canvas.ctx.strokeStyle = this.borderColor
     this.canvas.ctx.strokeRect(
       this.lengthPx * this.position.x,
       this.lengthPx * this.position.y,

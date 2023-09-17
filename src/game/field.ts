@@ -1,4 +1,4 @@
-import { COLORS, FIELD_LENGTH } from '../config'
+import { config } from '../config'
 import { Canvas } from './canvas'
 import { Direction } from './direction'
 import { Entity } from './entity'
@@ -6,7 +6,8 @@ import { Square } from './square'
 import { Vector } from './vector'
 
 export class Field {
-  public static readonly LENGTH: number = FIELD_LENGTH
+  private static readonly GRID_COLOR = config.colors.grid
+  public static readonly LENGTH: number = config.field.length
   private readonly squares: Square[][]
   private readonly squareLengthPx: number
 
@@ -24,7 +25,7 @@ export class Field {
       }),
     )
 
-    this.canvas.ctx.strokeStyle = COLORS.grid
+    this.canvas.ctx.strokeStyle = Field.GRID_COLOR
     this.canvas.ctx.strokeRect(
       0,
       0,
@@ -66,7 +67,12 @@ export class Field {
     for (let y = 0; y < fieldLength; y++) {
       squares[y] = []
       for (let x = 0; x < fieldLength; x++) {
-        squares[y][x] = new Square(canvas, squareLengthPx, new Vector(x, y))
+        squares[y][x] = new Square(
+          canvas,
+          squareLengthPx,
+          new Vector(x, y),
+          Field.GRID_COLOR,
+        )
       }
     }
     return squares
