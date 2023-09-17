@@ -1,6 +1,6 @@
 import { Canvas } from './canvas'
 import { Field } from './field'
-import { Food } from './food'
+import { FoodManager } from './foodManager'
 import { Keyboard } from './keyboard'
 import { Snake } from './snake'
 
@@ -8,7 +8,7 @@ export class Game {
   private readonly field: Field
   private readonly snake: Snake
   private readonly keyboard: Keyboard
-  private food: Food
+  private foodManager: FoodManager
 
   constructor(canvasElem: HTMLCanvasElement) {
     const canvas = new Canvas(canvasElem)
@@ -20,31 +20,17 @@ export class Game {
     this.keyboard = new Keyboard({
       changeDirection: (direction) => (this.snake.direction = direction),
     })
-    this.food = this.generateFood()
+    this.foodManager = new FoodManager(field)
   }
 
   public start(): void {
     this.field.initRender()
     this.snake.startMoving()
+    this.foodManager.init()
     this.keyboard.listen()
-  }
-
-  private generateFood(): Food {
-    return new Food(
-      this.field,
-      this.field.getRandomFreePosition(),
-      this.actions.foodEaten,
-    )
   }
 
   private onLoss() {
     alert('you lost')
-  }
-
-  private readonly actions = {
-    foodEaten: () => {
-      this.food = this.generateFood()
-      this.food.initRender()
-    },
   }
 }

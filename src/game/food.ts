@@ -18,7 +18,7 @@ export class Food implements Entity {
     this.field.renderSquare(this.position)
   }
 
-  public onDestroy() {
+  public onDestroy(): void {
     this.onEaten()
   }
 }
