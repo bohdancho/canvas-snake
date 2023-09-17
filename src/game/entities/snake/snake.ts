@@ -1,69 +1,46 @@
 import { config } from '~/game/core'
 import { Field } from '~/game/field'
-import { Direction, Vector, isValidDirectionChange, randomDirection } from '~/game/units'
-import { Entity, Food } from '..'
+import { Direction, Vector, randomDirection } from '~/game/units'
+import { Entity, SnakeMover } from '..'
 
 export class Snake implements Entity {
   public readonly color = config.colors.snake
-  private _direction: Direction
-  private requestedDirection?: Direction
-  private moveInterval?: ReturnType<typeof setInterval>
   private readonly body: Vector[]
   private readonly initLength = config.snake.initLength
-  private readonly moveFrequency = config.snake.moveFrequencyMs
+  private readonly mover: SnakeMover
 
   constructor(private readonly field: Field, private readonly onCollapse: () => void) {
     const direction = randomDirection()
     const body = Snake.getInitialBody(direction, this.initLength, field.length)
     body.forEach((position) => field.updateSquare(position, this))
 
-    this._direction = direction
     this.body = body
+    this.mover = new SnakeMover(
+      this.field,
+      body,
+      this.grow.bind(this),
+      this.trimTail.bind(this),
+      this.onCollapse,
+      direction,
+    )
   }
 
   public startMoving(): void {
-    this.moveInterval = setInterval(() => this.move(), this.moveFrequency)
-  }
-
-  private stopMoving(): void {
-    clearInterval(this.moveInterval)
-  }
-
-  public move(): void {
-    if (this.requestedDirection) {
-      this._direction = this.requestedDirection
-      this.requestedDirection = undefined
-    }
-
-    const move = this.getMove()
-
-    const willEat = this.willEat(move)
-    if (this.willCollapse(move)) {
-      this.stopMoving()
-      this.onCollapse()
-      return
-    }
-
-    this.grow(move)
-    if (!willEat) {
-      this.trimTail()
-    }
+    this.mover.startMoving()
   }
 
   public get direction(): Direction {
-    return this._direction
+    return this.mover.direction
   }
 
   public set direction(direction: Direction) {
-    if (isValidDirectionChange(this.direction, direction)) {
-      this.requestedDirection = direction
-    }
+    this.mover.direction = direction
   }
 
-  private grow(move: Vector): void {
-    this.body.push(move)
-    this.field.updateSquare(move, this)
-    this.field.renderSquare(move)
+  private grow(location: Vector): void {
+    this.body.push(location)
+    this.field.updateSquare(location, this)
+    this.field.renderSquare(location)
   }
 
   private trimTail(): void {
@@ -71,32 +48,6 @@ export class Snake implements Entity {
     if (!removed) throw Error('Snake move error')
     this.field.updateSquare(removed, null)
     this.field.renderSquare(removed)
-  }
-
-  private willCollapse(move: Vector): boolean {
-    return this.field.getSquare(move).entity === this
-  }
-
-  private willEat(move: Vector): boolean {
-    return this.field.getSquare(move).entity instanceof Food
-  }
-
-  private getMove(): Vector {
-    const last = Field.getLastSquare(this.body)
-    const square = Field.getConnectedSquare(this._direction, last)
-    const validPosition = { x: square.x, y: square.y }
-
-    const axes = ['x', 'y'] as const
-    axes.forEach((axis) => {
-      if (square[axis] >= this.field.length) {
-        validPosition[axis] = 0
-      }
-      if (square[axis] < 0) {
-        validPosition[axis] = this.field.length - 1
-      }
-    })
-
-    return new Vector(validPosition.x, validPosition.y)
   }
 
   private static getInitialBody(
