@@ -1,4 +1,4 @@
-import { COLORS, SNAKE_INIT_SIZE } from '../config'
+import { COLORS, SNAKE_INIT_SIZE, SNAKE_MOVE_FREQUENCY } from '../config'
 import { randomInteger } from '../utils/randomInteger'
 import { Direction, randomDirection } from './direction'
 import { Entity } from './entity'
@@ -6,19 +6,12 @@ import { Field } from './field'
 import { Food } from './food'
 import { Vector } from './vector'
 
-export class SnakeCollapcedException extends Error {
-  constructor() {
-    super('Snake collapsed')
-    this.name = 'SnakeCollapcedException'
-    Object.setPrototypeOf(this, SnakeCollapcedException.prototype)
-  }
-}
-
 export class Snake implements Entity {
   public readonly color = COLORS.snake
   private _direction: Direction
   private newDirection?: Direction
   private body: Vector[]
+  private moveInterval?: ReturnType<typeof setInterval>
 
   constructor(private readonly field: Field, private readonly onCollapse: () => void) {
     const direction = randomDirection()
@@ -29,10 +22,12 @@ export class Snake implements Entity {
     this.body = body
   }
 
-  public initRender() {
-    this.body.forEach((square) => {
-      return this.field.updateSquare(square, this)
-    })
+  public startSnake() {
+    this.moveInterval = setInterval(() => this.move(), SNAKE_MOVE_FREQUENCY)
+  }
+
+  private stopSnake() {
+    clearInterval(this.moveInterval)
   }
 
   public move(): void {
@@ -45,6 +40,7 @@ export class Snake implements Entity {
 
     const willEat = this.willEat(move)
     if (this.willCollapse(move)) {
+      this.stopSnake()
       this.onCollapse()
       return
     }

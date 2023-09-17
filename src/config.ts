@@ -1,5 +1,6 @@
 export const SQUARE_SIZE_PX = 50
 export const SNAKE_INIT_SIZE = 4
+export const SNAKE_MOVE_FREQUENCY = 200
 
 export const COLORS = {
   grid: 'grey',

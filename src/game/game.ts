@@ -15,7 +15,7 @@ export class Game {
   constructor(canvasElem: HTMLCanvasElement) {
     const canvas = new Canvas(canvasElem)
     const field = new Field(canvas)
-    const snake = new Snake(field, this.onLoss.bind(this))
+    const snake = new Snake(field, this.onLoss)
 
     this.field = field
     this.snake = snake
@@ -25,9 +25,7 @@ export class Game {
 
   public start(): void {
     this.field.initRender()
-    this.snake.initRender()
-    this.food.initRender()
-    this.startSnake()
+    this.snake.startSnake()
     this.keyboard.listen()
   }
 
@@ -39,16 +37,7 @@ export class Game {
     )
   }
 
-  private startSnake() {
-    this.tickInterval = setInterval(() => this.snake.move(), 300)
-  }
-
-  private stopSnake() {
-    clearInterval(this.tickInterval)
-  }
-
   private onLoss() {
-    this.stopSnake()
     alert('you lost')
   }
 
