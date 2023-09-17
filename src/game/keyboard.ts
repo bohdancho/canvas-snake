@@ -1,4 +1,4 @@
-import { Direction } from './direction'
+import { Direction } from './units/direction'
 
 const KEY_DIRECTION_MAP = {
   ArrowLeft: Direction.x_neg,

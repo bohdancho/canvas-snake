@@ -1,9 +1,9 @@
-import { config } from './config'
-import { Direction, isValidDirectionChange, randomDirection } from './direction'
-import { Entity } from './entity'
-import { Field } from './field'
-import { Food } from './food'
-import { Vector } from './vector'
+import { config } from '../../config'
+import { Field } from '../../field/field'
+import { Direction, isValidDirectionChange, randomDirection } from '../../units/direction'
+import { Vector } from '../../units/vector'
+import { Entity } from '../entity'
+import { Food } from '../food/food'
 
 export class Snake implements Entity {
   public readonly color = config.colors.snake

@@ -1,4 +1,4 @@
-import { randomInteger } from '../utils/randomInteger'
+import { randomInteger } from '../../utils/randomInteger'
 
 export enum Direction {
   x_pos = 'x_pos',

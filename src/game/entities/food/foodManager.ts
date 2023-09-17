@@ -1,4 +1,4 @@
-import { Field } from './field'
+import { Field } from '../../field/field'
 import { Food } from './food'
 
 export class FoodManager {

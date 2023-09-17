@@ -1,8 +1,8 @@
 import { Canvas } from './canvas'
-import { Field } from './field'
-import { FoodManager } from './foodManager'
+import { FoodManager } from './entities/food/foodManager'
+import { Snake } from './entities/snake/snake'
+import { Field } from './field/field'
 import { Keyboard } from './keyboard'
-import { Snake } from './snake'
 
 export class Game {
   private readonly field: Field

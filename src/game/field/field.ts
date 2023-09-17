@@ -1,9 +1,9 @@
-import { Canvas } from './canvas'
-import { Color, config } from './config'
-import { Direction } from './direction'
-import { Entity } from './entity'
+import { Canvas } from '../canvas'
+import { Color, config } from '../config'
+import { Entity } from '../entities/entity'
+import { Direction } from '../units/direction'
+import { Vector } from '../units/vector'
 import { Square } from './square'
-import { Vector } from './vector'
 
 export class Field {
   public readonly length: number = config.field.length
