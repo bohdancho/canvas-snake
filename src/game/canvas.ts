@@ -1,7 +1,5 @@
-import { SizePx } from './size'
-
 export class Canvas {
-  public readonly sizePx: SizePx
+  public readonly sizePx: number
   public readonly ctx: CanvasRenderingContext2D
 
   constructor(elem: HTMLCanvasElement) {
@@ -10,7 +8,7 @@ export class Canvas {
     const { width, height } = elem.getBoundingClientRect()
     elem.width = width
     elem.height = height
-    this.sizePx = new SizePx(width, height)
+    this.sizePx = width
   }
 
   private static getContext(elem: HTMLCanvasElement): CanvasRenderingContext2D {
