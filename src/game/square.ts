@@ -13,11 +13,6 @@ export class Square {
     private readonly borderColor: Color,
   ) {}
 
-  public update(entity: Entity | null) {
-    if (this._entity?.onDestroy) this._entity.onDestroy()
-    this._entity = entity
-  }
-
   public render() {
     if (this._entity) {
       this.paint(this._entity.color)
@@ -28,6 +23,14 @@ export class Square {
 
   public get entity() {
     return this._entity
+  }
+
+  public set entity(entity: Entity | null) {
+    const entityChanged = this._entity !== entity
+    if (entityChanged) {
+      this._entity?.onDestroy?.()
+    }
+    this._entity = entity
   }
 
   private paint(color: Color) {

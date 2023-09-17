@@ -8,7 +8,7 @@ export class Game {
   private readonly field: Field
   private readonly snake: Snake
   private readonly keyboard: Keyboard
-  private foodManager: FoodManager
+  private readonly foodManager: FoodManager
 
   constructor(canvasElem: HTMLCanvasElement) {
     const canvas = new Canvas(canvasElem)
