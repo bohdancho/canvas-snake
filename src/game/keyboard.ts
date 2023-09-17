@@ -8,7 +8,7 @@ const KEY_DIRECTION_MAP = {
 } as const
 
 type SupportedKey = keyof typeof KEY_DIRECTION_MAP
-interface Actions {
+type Actions = {
   changeDirection: (direction: Direction) => void
 }
 
