@@ -1,7 +1,7 @@
-import { config } from '../../config'
-import { Field } from '../../field/field'
-import { Vector } from '../../units/vector'
-import { Entity } from '../entity'
+import { config } from '~/game/core'
+import { Field } from '~/game/field'
+import { Vector } from '~/game/units'
+import { Entity } from '..'
 
 export class Food implements Entity {
   public readonly color = config.colors.food

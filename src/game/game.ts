@@ -1,8 +1,6 @@
-import { Canvas } from './canvas'
-import { FoodManager } from './entities/food/foodManager'
-import { Snake } from './entities/snake/snake'
-import { Field } from './field/field'
-import { Keyboard } from './keyboard'
+import { Canvas, Keyboard } from './core'
+import { FoodManager, Snake } from './entities'
+import { Field } from './field'
 
 export class Game {
   private readonly field: Field

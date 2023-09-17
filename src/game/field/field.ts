@@ -1,9 +1,7 @@
-import { Canvas } from '../canvas'
-import { Color, config } from '../config'
-import { Entity } from '../entities/entity'
-import { Direction } from '../units/direction'
-import { Vector } from '../units/vector'
-import { Square } from './square'
+import { Canvas, Color, config } from '~/game/core'
+import { Entity } from '~/game/entities'
+import { Direction, Vector } from '~/game/units'
+import { Square } from '.'
 
 export class Field {
   public readonly length: number = config.field.length

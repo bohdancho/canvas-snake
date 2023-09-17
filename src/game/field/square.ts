@@ -1,7 +1,6 @@
-import { Canvas } from '../canvas'
-import { Color } from '../config'
-import { Entity } from '../entities/entity'
-import { Vector } from '../units/vector'
+import { Canvas, Color } from '~/game/core'
+import { Entity } from '~/game/entities'
+import { Vector } from '~/game/units'
 
 export class Square {
   private _entity: Entity | null = null

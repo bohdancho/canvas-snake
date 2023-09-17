@@ -1,4 +1,5 @@
-import { Color } from '../config'
+import { Color } from '~/game/core'
+
 export interface Entity {
   color: Color
   onDestroy?: () => void

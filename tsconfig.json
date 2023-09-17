@@ -14,6 +14,9 @@
     "noEmit": true,
 
     /* Linting */
+    "paths": {
+      "~/*": ["./src/*"]
+    },
     "strict": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true

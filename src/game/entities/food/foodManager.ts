@@ -1,5 +1,5 @@
-import { Field } from '../../field/field'
-import { Food } from './food'
+import { Field } from '~/game/field'
+import { Food } from '.'
 
 export class FoodManager {
   private food?: Food

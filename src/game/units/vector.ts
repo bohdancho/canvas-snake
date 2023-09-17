@@ -1,4 +1,4 @@
-import { randomInteger } from '../../utils/randomInteger'
+import { randomInteger } from '~/utils'
 
 export class Vector {
   constructor(public readonly x: number, public readonly y: number) {}
