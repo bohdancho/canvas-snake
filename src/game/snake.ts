@@ -24,11 +24,11 @@ export class Snake implements Entity {
     this.body = body
   }
 
-  public startSnake() {
+  public startMoving() {
     this.moveInterval = setInterval(() => this.move(), Snake.MOVE_FREQUENCY)
   }
 
-  private stopSnake() {
+  private stopMoving() {
     clearInterval(this.moveInterval)
   }
 
@@ -42,7 +42,7 @@ export class Snake implements Entity {
 
     const willEat = this.willEat(move)
     if (this.willCollapse(move)) {
-      this.stopSnake()
+      this.stopMoving()
       this.onCollapse()
       return
     }

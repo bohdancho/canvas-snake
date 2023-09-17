@@ -25,7 +25,7 @@ export class Game {
 
   public start(): void {
     this.field.initRender()
-    this.snake.startSnake()
+    this.snake.startMoving()
     this.keyboard.listen()
   }
 
