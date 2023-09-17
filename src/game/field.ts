@@ -18,7 +18,7 @@ export class Field {
     this.squares = Field.getInitialSquares(canvas, this.length, squareLengthPx, this.gridColor)
   }
 
-  public initRender() {
+  public initRender(): void {
     this.squares.forEach((row) =>
       row.forEach((square) => {
         square.render()
@@ -28,12 +28,12 @@ export class Field {
     this.paintInitBorder()
   }
 
-  public updateSquare(position: Vector, entity: Entity | null) {
+  public updateSquare(position: Vector, entity: Entity | null): void {
     const square = this.getSquare(position)
     square.entity = entity
   }
 
-  public renderSquare(position: Vector) {
+  public renderSquare(position: Vector): void {
     const square = this.getSquare(position)
     square.render()
   }
@@ -44,11 +44,11 @@ export class Field {
     return isFree ? position : this.getRandomFreePosition()
   }
 
-  public getSquare(position: Vector) {
+  public getSquare(position: Vector): Square {
     return this.squares[position.y][position.x]
   }
 
-  private paintInitBorder() {
+  private paintInitBorder(): void {
     this.canvas.ctx.strokeStyle = this.gridColor
     this.canvas.ctx.strokeRect(
       0,
@@ -90,7 +90,7 @@ export class Field {
     return x >= 0 && y >= 0 && x < fieldLength && y < fieldLength
   }
 
-  private static getSquareLengthPx(canvas: Canvas, fieldLength: number) {
+  private static getSquareLengthPx(canvas: Canvas, fieldLength: number): number {
     return Math.floor(canvas.sizePx / fieldLength)
   }
 
@@ -99,7 +99,7 @@ export class Field {
     fieldLength: number,
     squareLengthPx: number,
     gridColor: Color,
-  ) {
+  ): Square[][] {
     const squares: Square[][] = []
     for (let y = 0; y < fieldLength; y++) {
       squares[y] = []

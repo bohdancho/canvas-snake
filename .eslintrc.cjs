@@ -8,5 +8,9 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': ['error', { functions: false }],
     '@typescript-eslint/no-unused-vars': 'warn',
     '@typescript-eslint/no-unused-expressions': 'warn',
+    '@typescript-eslint/explicit-function-return-type': [
+      'warn',
+      { allowTypedFunctionExpressions: true },
+    ],
   },
 }

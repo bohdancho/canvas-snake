@@ -13,6 +13,6 @@ export function randomDirection(): Direction {
   return directions[randomIndex]
 }
 
-export function isValidDirectionChange(a: Direction, b: Direction) {
+export function isValidDirectionChange(a: Direction, b: Direction): boolean {
   return a[0] !== b[0]
 }

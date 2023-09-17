@@ -19,7 +19,7 @@ export class Game {
     this.snake = snake
     this.keyboard = new Keyboard({
       changeDirection: (direction) => (this.snake.direction = direction),
-    })
+    } as const)
     this.foodManager = new FoodManager(field)
   }
 
@@ -30,7 +30,7 @@ export class Game {
     this.keyboard.listen()
   }
 
-  private onLoss() {
+  private onLoss(): void {
     alert('you lost')
   }
 }

@@ -15,7 +15,7 @@ interface Actions {
 export class Keyboard {
   constructor(private readonly actions: Actions) {}
 
-  public listen() {
+  public listen(): void {
     document.addEventListener('keydown', ({ key }) => {
       if (isSupportedKey(key)) {
         this.actions.changeDirection(KEY_DIRECTION_MAP[key])
