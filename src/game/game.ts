@@ -3,7 +3,7 @@ import { Direction, isValidDirectionChange } from './direction'
 import { Field } from './field'
 import { Food } from './food'
 import { Keyboard } from './keyboard'
-import { Snake, SnakeCollapcedException } from './snake'
+import { Snake } from './snake'
 
 export class Game {
   private readonly field: Field
@@ -11,21 +11,16 @@ export class Game {
   private readonly keyboard: Keyboard
   private food: Food
   private tickInterval?: ReturnType<typeof setInterval>
-  private lost = false
 
   constructor(canvasElem: HTMLCanvasElement) {
     const canvas = new Canvas(canvasElem)
-
     const field = new Field(canvas)
+    const snake = new Snake(field, this.onLoss.bind(this))
+
     this.field = field
-
-    const snake = new Snake(field)
     this.snake = snake
-
-    const food = this.generateFood()
-    this.food = food
-
     this.keyboard = new Keyboard(this.actions)
+    this.food = this.generateFood()
   }
 
   public start(): void {
@@ -44,35 +39,23 @@ export class Game {
     )
   }
 
-  private restartSnake() {
-    clearInterval(this.tickInterval)
-    this.startSnake()
+  private startSnake() {
+    this.tickInterval = setInterval(() => this.snake.move(), 300)
   }
 
-  private startSnake() {
-    this.tickInterval = setInterval(() => this.snake.move(), 500)
+  private stopSnake() {
+    clearInterval(this.tickInterval)
   }
 
   private onLoss() {
-    clearInterval(this.tickInterval)
-    this.lost = true
+    this.stopSnake()
     alert('you lost')
   }
 
   private readonly actions = {
     changeDirection: (direction: Direction) => {
-      if (this.lost || !isValidDirectionChange(this.snake.direction, direction)) {
-        return
-      }
-      this.snake.direction = direction
-      try {
-        this.snake.move()
-        this.restartSnake()
-      } catch (error) {
-        if (error instanceof SnakeCollapcedException) {
-          clearInterval(this.tickInterval)
-          this.onLoss()
-        }
+      if (isValidDirectionChange(this.snake.direction, direction)) {
+        this.snake.direction = direction
       }
     },
     foodEaten: () => {

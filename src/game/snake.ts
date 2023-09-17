@@ -16,15 +16,16 @@ export class SnakeCollapcedException extends Error {
 
 export class Snake implements Entity {
   public readonly color = COLORS.snake
-  public direction: Direction
+  private _direction: Direction
+  private newDirection?: Direction
   private body: Vector[]
 
-  constructor(private readonly field: Field) {
+  constructor(private readonly field: Field, private readonly onCollapse: () => void) {
     const direction = randomDirection()
     const body = Snake.getInitialBody(field.fieldSize, direction)
     body.forEach((position) => field.updateSquare(position, this))
 
-    this.direction = direction
+    this._direction = direction
     this.body = body
   }
 
@@ -34,18 +35,32 @@ export class Snake implements Entity {
     })
   }
 
-  public move() {
+  public move(): void {
+    if (this.newDirection) {
+      this._direction = this.newDirection
+      this.newDirection = undefined
+    }
+
     const move = this.getMove()
 
     const willEat = this.willEat(move)
     if (this.willCollapse(move)) {
-      throw new SnakeCollapcedException()
+      this.onCollapse()
+      return
     }
 
     this.grow(move)
     if (!willEat) {
-      this.removeTail()
+      this.trimTail()
     }
+  }
+
+  public get direction() {
+    return this._direction
+  }
+
+  public set direction(direction: Direction) {
+    this.newDirection = direction
   }
 
   private grow(move: Vector): void {
@@ -54,7 +69,7 @@ export class Snake implements Entity {
     this.field.renderSquare(move)
   }
 
-  private removeTail(): void {
+  private trimTail(): void {
     const removed = this.body.shift()
     if (!removed) throw Error('Snake move error')
     this.field.updateSquare(removed, null)
@@ -71,7 +86,7 @@ export class Snake implements Entity {
 
   private getMove(): Vector {
     const last = Field.getLastSquare(this.body)
-    const square = Field.getConnectedSquare(this.direction, last)
+    const square = Field.getConnectedSquare(this._direction, last)
     const validPosition = { x: square.x, y: square.y }
 
     const axes = ['x', 'y'] as const
