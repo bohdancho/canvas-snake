@@ -1,5 +1,5 @@
-import { config } from '../config'
 import { Canvas } from './canvas'
+import { config } from './config'
 import { Direction } from './direction'
 import { Entity } from './entity'
 import { Square } from './square'

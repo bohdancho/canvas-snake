@@ -1,4 +1,4 @@
-import { config } from '../config'
+import { config } from './config'
 import { Entity } from './entity'
 import { Field } from './field'
 import { Vector } from './vector'

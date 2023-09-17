@@ -1,5 +1,5 @@
-import { Color } from '../config'
 import { Canvas } from './canvas'
+import { Color } from './config'
 import { Entity } from './entity'
 import { Vector } from './vector'
 

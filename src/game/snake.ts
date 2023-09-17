@@ -1,5 +1,5 @@
-import { config } from '../config'
 import { randomInteger } from '../utils/randomInteger'
+import { config } from './config'
 import { Direction, randomDirection } from './direction'
 import { Entity } from './entity'
 import { Field } from './field'
