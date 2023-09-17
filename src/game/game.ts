@@ -10,7 +10,6 @@ export class Game {
   private readonly snake: Snake
   private readonly keyboard: Keyboard
   private food: Food
-  private tickInterval?: ReturnType<typeof setInterval>
 
   constructor(canvasElem: HTMLCanvasElement) {
     const canvas = new Canvas(canvasElem)
