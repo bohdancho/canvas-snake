@@ -46,7 +46,7 @@ export class Field {
 
   public getRandomFreePosition(): Vector {
     const position = Vector.random(Field.LENGTH)
-    const conflict = this.getSquare(position).entity
+    const conflict = this.getSquare(position).entity !== null
     return conflict ? this.getRandomFreePosition() : position
   }
 
@@ -58,21 +58,12 @@ export class Field {
     return Math.floor(canvas.sizePx / fieldLength)
   }
 
-  private static getInitSquares(
-    canvas: Canvas,
-    fieldLength: number,
-    squareLengthPx: number,
-  ) {
+  private static getInitSquares(canvas: Canvas, fieldLength: number, squareLengthPx: number) {
     const squares: Square[][] = []
     for (let y = 0; y < fieldLength; y++) {
       squares[y] = []
       for (let x = 0; x < fieldLength; x++) {
-        squares[y][x] = new Square(
-          canvas,
-          squareLengthPx,
-          new Vector(x, y),
-          Field.GRID_COLOR,
-        )
+        squares[y][x] = new Square(canvas, squareLengthPx, new Vector(x, y), Field.GRID_COLOR)
       }
     }
     return squares
@@ -98,9 +89,9 @@ export class Field {
     return new Vector(x, y)
   }
 
-  public static getLastSquare(entity: Vector[]): Vector {
-    const last = entity.at(-1)
-    if (!last) throw Error('Entity render error')
+  public static getLastSquare(body: Vector[]): Vector {
+    const last = body.at(-1)
+    if (!last) throw Error('getLastSquare error')
     return last
   }
 }
