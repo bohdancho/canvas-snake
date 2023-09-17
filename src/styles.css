@@ -6,7 +6,7 @@ canvas {
 
 .wrapper {
   height: 100vh;
-  background: #0f172a;
+  background: #0f172a; /* tw-slate-900 */
   display: flex;
   align-items: center;
   justify-content: center;
