@@ -15,7 +15,7 @@ export class FoodManager {
     this.food.initRender()
   }
 
-  private onEaten() {
+  private onEaten(): void {
     this.generateFood()
   }
 }

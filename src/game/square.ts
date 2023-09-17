@@ -13,7 +13,7 @@ export class Square {
     private readonly borderColor: Color,
   ) {}
 
-  public render() {
+  public render(): void {
     if (this._entity) {
       this.paint(this._entity.color)
     } else {
@@ -21,7 +21,7 @@ export class Square {
     }
   }
 
-  public get entity() {
+  public get entity(): Entity | null {
     return this._entity
   }
 
@@ -33,7 +33,7 @@ export class Square {
     this._entity = entity
   }
 
-  private paint(color: Color) {
+  private paint(color: Color): void {
     this.canvas.ctx.fillStyle = color
     this.canvas.ctx.fillRect(
       this.lengthPx * this.position.x,
@@ -43,7 +43,7 @@ export class Square {
     )
   }
 
-  private clear() {
+  private clear(): void {
     this.canvas.ctx.clearRect(
       this.lengthPx * this.position.x,
       this.lengthPx * this.position.y,
@@ -53,7 +53,7 @@ export class Square {
     this.paintBorder()
   }
 
-  private paintBorder() {
+  private paintBorder(): void {
     this.canvas.ctx.strokeStyle = this.borderColor
     this.canvas.ctx.strokeRect(
       this.lengthPx * this.position.x,

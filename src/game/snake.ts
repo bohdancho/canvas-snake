@@ -23,11 +23,11 @@ export class Snake implements Entity {
     this.body = body
   }
 
-  public startMoving() {
+  public startMoving(): void {
     this.moveInterval = setInterval(() => this.move(), this.moveFrequency)
   }
 
-  private stopMoving() {
+  private stopMoving(): void {
     clearInterval(this.moveInterval)
   }
 
@@ -52,7 +52,7 @@ export class Snake implements Entity {
     }
   }
 
-  public get direction() {
+  public get direction(): Direction {
     return this._direction
   }
 

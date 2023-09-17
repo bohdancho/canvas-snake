@@ -14,7 +14,7 @@ export class Food implements Entity {
     this.field.updateSquare(position, this)
   }
 
-  public initRender() {
+  public initRender(): void {
     this.field.renderSquare(this.position)
   }
 
