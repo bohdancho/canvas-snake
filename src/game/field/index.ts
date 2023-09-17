@@ -1,2 +1,2 @@
-export * from './field';
-export * from './square';
+export * from './field'
+export * from './square'

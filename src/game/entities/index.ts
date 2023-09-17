@@ -1,3 +1,3 @@
-export * from './food';
-export * from './snake';
-export * from './entity';
+export * from './entity'
+export * from './food'
+export * from './snake'

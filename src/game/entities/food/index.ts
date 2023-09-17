@@ -1,2 +1,2 @@
-export * from './food';
-export * from './foodManager';
+export * from './food'
+export * from './foodManager'

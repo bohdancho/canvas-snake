@@ -1,2 +1,2 @@
-export * from './direction';
-export * from './vector';
+export * from './direction'
+export * from './vector'
