@@ -12,7 +12,7 @@ export interface Actions {
   changeDirection: (direction: Direction) => void
 }
 
-export class Keyboard {
+export class KeyboardListener {
   constructor(private readonly actions: Actions) {}
 
   public listen() {

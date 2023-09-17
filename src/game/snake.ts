@@ -1,6 +1,6 @@
 import { randomInteger } from '../utils/randomInteger'
 import { config } from './config'
-import { Direction, randomDirection } from './direction'
+import { Direction, isValidDirectionChange, randomDirection } from './direction'
 import { Entity } from './entity'
 import { Field } from './field'
 import { Food } from './food'
@@ -58,7 +58,9 @@ export class Snake implements Entity {
   }
 
   public set direction(direction: Direction) {
-    this.requestedDirection = direction
+    if (isValidDirectionChange(this.direction, direction)) {
+      this.requestedDirection = direction
+    }
   }
 
   private grow(move: Vector): void {
