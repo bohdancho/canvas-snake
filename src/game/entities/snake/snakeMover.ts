@@ -1,20 +1,18 @@
-import { config } from '~/game/core'
 import { Field } from '~/game/field'
 import { Direction, Vector, isValidDirectionChange } from '~/game/units'
 import { Food, Snake } from '..'
+import { SnakeBody } from './snakeBody'
 
 export class SnakeMover {
   private _direction: Direction
   private requestedDirection?: Direction
   private moveInterval?: ReturnType<typeof setInterval>
-  private readonly moveFrequency = config.snake.moveFrequencyMs
 
   constructor(
     private readonly field: Field,
-    private readonly body: Vector[],
-    private readonly grow: (move: Vector) => void,
-    private readonly trimTail: () => void,
+    private readonly body: SnakeBody,
     private readonly onCollapse: () => void,
+    private readonly moveFrequencyMs: number,
     initDirection: Direction,
   ) {
     this._direction = initDirection
@@ -31,7 +29,7 @@ export class SnakeMover {
   }
 
   public startMoving(): void {
-    this.moveInterval = setInterval(() => this.move(), this.moveFrequency)
+    this.moveInterval = setInterval(() => this.move(), this.moveFrequencyMs)
   }
 
   private stopMoving(): void {
@@ -53,9 +51,9 @@ export class SnakeMover {
       return
     }
 
-    this.grow(move)
+    this.body.grow(move)
     if (!willEat) {
-      this.trimTail()
+      this.body.trimTail()
     }
   }
 
@@ -68,7 +66,7 @@ export class SnakeMover {
   }
 
   private getMove(): Vector {
-    const last = Field.getLastSquare(this.body)
+    const last = Field.getLastSquare(this.body.state)
     const square = Field.getConnectedSquare(this.direction, last)
     const validPosition = { x: square.x, y: square.y }
 
