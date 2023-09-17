@@ -1,13 +1,13 @@
 import { Canvas } from './canvas'
 import { Field } from './field'
 import { Food } from './food'
-import { KeyboardListener } from './keyboard'
+import { Keyboard } from './keyboard'
 import { Snake } from './snake'
 
 export class Game {
   private readonly field: Field
   private readonly snake: Snake
-  private readonly keyboard: KeyboardListener
+  private readonly keyboard: Keyboard
   private food: Food
 
   constructor(canvasElem: HTMLCanvasElement) {
@@ -17,7 +17,7 @@ export class Game {
 
     this.field = field
     this.snake = snake
-    this.keyboard = new KeyboardListener({
+    this.keyboard = new Keyboard({
       changeDirection: (direction) => (this.snake.direction = direction),
     })
     this.food = this.generateFood()
