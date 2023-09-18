@@ -1,7 +1,7 @@
 import { Field } from '~/game/field'
 import { Direction, Vector } from '~/game/units'
-import { Snake } from '.'
-import { Food } from '..'
+import { Snake } from '..'
+import { Food } from '../..'
 import { SnakeBodySegment } from './snakeBodySegment'
 
 export class SnakeBody {

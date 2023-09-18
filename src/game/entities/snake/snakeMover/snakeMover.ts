@@ -1,6 +1,6 @@
 import { Field } from '~/game/field'
 import { Direction, isValidDirectionChange } from '~/game/units'
-import { SnakeBody } from './snakeBody'
+import { SnakeBody } from '../snakeBody/snakeBody'
 
 export class SnakeMover {
   private validDirection: Direction
