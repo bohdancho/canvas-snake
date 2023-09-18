@@ -18,11 +18,14 @@ export class Game {
     this.foodManager = new FoodManager(this.field)
   }
 
-  public start(): void {
+  public init(): void {
     this.field.initRender()
-    this.snake.startMoving()
     this.foodManager.init()
     this.keyboard.listen()
+  }
+
+  public start(): void {
+    this.snake.startMoving()
   }
 
   private onLoss(): void {

@@ -26,6 +26,7 @@ export class SnakeMover {
   }
 
   public startMoving(): void {
+    this.move()
     this.moveInterval = setInterval(() => this.move(), this.moveFrequencyMs)
   }
 
