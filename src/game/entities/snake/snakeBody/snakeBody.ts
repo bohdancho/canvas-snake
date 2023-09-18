@@ -38,7 +38,7 @@ export class SnakeBody {
   public trimTail(): void {
     const removedSegment = this.segments.shift()
     if (!removedSegment) throw Error('Snake trimTail failed')
-    this.field.updateSquare(removedSegment.location, null)
+    this.field.updateSquare(removedSegment.location, undefined)
     this.field.renderSquare(removedSegment.location)
   }
 
