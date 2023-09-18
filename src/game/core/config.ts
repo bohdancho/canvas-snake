@@ -1,13 +1,13 @@
 export const config = {
   field: {
     length: 7,
-    resolution: 5,
   },
   snake: {
     initLength: 3,
     moveFrequencyMs: 300,
   },
   colors: {
+    grid: '#6b7280', // tw-grey-500
     snake: '#3b82f6', // tw-blue-500
     food: '#ef4444', // tw-red-500
   },

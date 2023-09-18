@@ -2,7 +2,6 @@ canvas {
   width: 80vw;
   max-width: 80vh;
   aspect-ratio: 1 / 1;
-  border: 1px solid #64748b; // tw-slate-900
 }
 
 .wrapper {

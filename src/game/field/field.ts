@@ -1,16 +1,19 @@
-import { Canvas, config } from '~/game/core'
+import { Canvas, Color, config } from '~/game/core'
 import { Entity } from '~/game/entities'
 import { Direction, Vector } from '~/game/units'
-import { ReadonlyMatrix } from '~/utils'
-import { FieldSquare } from './fieldSquare'
+import { Square } from '.'
 
 export class Field {
   public readonly length: number = config.field.length
-  private readonly squares: ReadonlyMatrix<FieldSquare>
+  private readonly gridColor = config.colors.grid
+  private readonly squares: Square[][]
+  private readonly squareLengthPx: number
 
   constructor(private readonly canvas: Canvas) {
-    const squareLengthPx = canvas.sizePx / this.length
-    this.squares = Field.getInitialSquares(this.canvas, this.length, squareLengthPx)
+    const squareLengthPx = Field.getSquareLengthPx(this.canvas, this.length)
+
+    this.squareLengthPx = squareLengthPx
+    this.squares = Field.getInitialSquares(this.canvas, this.length, squareLengthPx, this.gridColor)
   }
 
   public initRender(): void {
@@ -19,9 +22,11 @@ export class Field {
         square.render()
       }),
     )
+
+    this.paintInitBorder()
   }
 
-  public updateSquare(location: Vector, entity: Entity | undefined): void {
+  public updateSquare(location: Vector, entity: Entity | null): void {
     const square = this.getSquare(location)
     square.entity = entity
   }
@@ -33,11 +38,11 @@ export class Field {
 
   public getRandomFreeLocation(): Vector {
     const location = Vector.random(this.length)
-    const isFree = this.getSquare(location).entity === undefined
+    const isFree = this.getSquare(location).entity === null
     return isFree ? location : this.getRandomFreeLocation()
   }
 
-  public getSquare(location: Vector): FieldSquare {
+  public getSquare(location: Vector): Square {
     return this.squares[location.y][location.x]
   }
 
@@ -45,6 +50,16 @@ export class Field {
     const { x, y } = location
 
     return x >= 0 && y >= 0 && x < this.length && y < this.length
+  }
+
+  private paintInitBorder(): void {
+    this.canvas.ctx.strokeStyle = this.gridColor
+    this.canvas.ctx.strokeRect(
+      0,
+      0,
+      this.length * this.squareLengthPx,
+      this.length * this.squareLengthPx,
+    )
   }
 
   public static getConnectedLocation(direction: Direction, prev: Vector): Vector {
@@ -67,21 +82,21 @@ export class Field {
     return new Vector(x, y)
   }
 
+  private static getSquareLengthPx(canvas: Canvas, fieldLength: number): number {
+    return Math.floor(canvas.sizePx / fieldLength)
+  }
+
   private static getInitialSquares(
     canvas: Canvas,
     fieldLength: number,
     squareLengthPx: number,
-  ): FieldSquare[][] {
-    const squares: FieldSquare[][] = []
+    gridColor: Color,
+  ): Square[][] {
+    const squares: Square[][] = []
     for (let y = 0; y < fieldLength; y++) {
       squares[y] = []
       for (let x = 0; x < fieldLength; x++) {
-        squares[y][x] = new FieldSquare(
-          canvas,
-          squareLengthPx,
-          new Vector(x, y),
-          config.field.resolution, // todo pull resolution to config
-        )
+        squares[y][x] = new Square(canvas, squareLengthPx, new Vector(x, y), gridColor)
       }
     }
     return squares
