@@ -41,7 +41,7 @@ export class SnakeMover {
       this.requestedDirection = undefined
     }
 
-    const { event } = this.body.grow(this.validDirection)
+    const { event } = this.body.growForward(this.validDirection)
 
     if (event === 'collapsed') {
       this.stopMoving()

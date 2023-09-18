@@ -17,11 +17,11 @@ export class SnakeBody {
     this.segments.forEach((segment) => this.field.updateSquare(segment.location, snake))
   }
 
-  public grow(validDirection: Direction): { event: null | 'ateFood' | 'collapsed' } {
+  public growForward(validDirection: Direction): { event: null | 'ateFood' | 'collapsed' } {
     const headSegment = SnakeBody.getLastSegment(this.segments)
+
     const location = Field.getConnectedLocation(validDirection, headSegment.location)
     const transpiledLocation = SnakeBody.transpileLocation(location, this.field.length)
-
     const replacedEntity = this.field.getSquare(transpiledLocation).entity
 
     if (replacedEntity === this.snake) {
