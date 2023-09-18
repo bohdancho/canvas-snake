@@ -1,34 +1,22 @@
-import { Canvas, Keyboard } from './core'
-import { FoodManager, Snake } from './entities'
-import { Field } from './field'
+import { GameInstance } from './gameInstance/gameInstance'
 
 export class Game {
-  private readonly field: Field
-  private readonly snake: Snake
-  private readonly keyboard: Keyboard
-  private readonly foodManager: FoodManager
+  private gameInstance: GameInstance
 
-  constructor(canvasElem: HTMLCanvasElement) {
-    const canvas = new Canvas(canvasElem)
-    this.field = new Field(canvas)
-    this.snake = new Snake(this.field, this.onLoss)
-    this.keyboard = new Keyboard({
-      changeDirection: (direction) => (this.snake.direction = direction),
-    } as const)
-    this.foodManager = new FoodManager(this.field)
+  constructor(private readonly canvas: HTMLCanvasElement, startScreen: Element) {
+    this.gameInstance = new GameInstance(this.canvas)
+    this.addStartListener(startScreen)
   }
 
-  public init(): void {
-    this.field.initRender()
-    this.foodManager.init()
-    this.keyboard.listen()
-  }
+  private addStartListener(startScreen: Element): void {
+    const startListener = (): void => {
+      startScreen.classList.add('closed')
 
-  public start(): void {
-    this.snake.startMoving()
-  }
+      this.gameInstance.start()
 
-  private onLoss(): void {
-    alert('you lost')
+      document.removeEventListener('keydown', startListener)
+    }
+
+    document.addEventListener('keydown', startListener)
   }
 }

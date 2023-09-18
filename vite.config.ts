@@ -10,6 +10,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '~/game': fileURLToPath(new URL('./src/game/gameInstance', import.meta.url)),
       '~': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },

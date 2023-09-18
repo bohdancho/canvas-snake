@@ -15,7 +15,8 @@
 
     /* Linting */
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "~/game/*": ["./src/game/gameInstance/*"]
     },
     "strict": true,
     "noUnusedParameters": true,
