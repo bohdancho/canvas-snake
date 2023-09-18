@@ -8,10 +8,10 @@ export class GameInstance {
   private readonly keyboard: Keyboard
   private readonly foodManager: FoodManager
 
-  constructor(canvasElem: HTMLCanvasElement) {
+  constructor(canvasElem: HTMLCanvasElement, onLoss: () => void) {
     const canvas = new Canvas(canvasElem)
     this.field = new Field(canvas)
-    this.snake = new Snake(this.field, this.onLoss)
+    this.snake = new Snake(this.field, onLoss)
     this.keyboard = new Keyboard({
       changeDirection: (direction) => (this.snake.direction = direction),
     } as const)
@@ -28,9 +28,5 @@ export class GameInstance {
 
   public start(): void {
     this.snake.startMoving()
-  }
-
-  private onLoss(): void {
-    alert('you lost')
   }
 }
