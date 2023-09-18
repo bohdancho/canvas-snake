@@ -7,16 +7,10 @@ import { FieldSquare } from './fieldSquare'
 export class Field {
   public readonly length: number = config.field.length
   private readonly squares: ReadonlyMatrix<FieldSquare>
-  private readonly resolution = config.field.resolution
 
   constructor(private readonly canvas: Canvas) {
     const squareLengthPx = canvas.sizePx / this.length
-    this.squares = Field.getInitialSquares(
-      this.canvas,
-      squareLengthPx,
-      this.length,
-      this.resolution,
-    )
+    this.squares = Field.getInitialSquares(this.canvas, this.length, squareLengthPx)
   }
 
   public initRender(): void {
@@ -75,9 +69,8 @@ export class Field {
 
   private static getInitialSquares(
     canvas: Canvas,
-    squareLengthPx: number,
     fieldLength: number,
-    resolution: number,
+    squareLengthPx: number,
   ): FieldSquare[][] {
     const squares: FieldSquare[][] = []
     for (let y = 0; y < fieldLength; y++) {
@@ -87,7 +80,7 @@ export class Field {
           canvas,
           squareLengthPx,
           new Vector(x, y),
-          resolution, // todo pull resolution to config
+          config.field.resolution, // todo pull resolution to config
         )
       }
     }
