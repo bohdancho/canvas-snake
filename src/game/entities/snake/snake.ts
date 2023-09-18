@@ -14,7 +14,6 @@ export class Snake implements Entity {
     const initDirection = randomDirection()
     this.body = new SnakeBody(this, this.field, config.snake.initLength, initDirection)
     this.mover = new SnakeMover(
-      this.field,
       this.body,
       this.onCollapse,
       config.snake.moveFrequencyMs,
