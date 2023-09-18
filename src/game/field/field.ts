@@ -62,7 +62,7 @@ export class Field {
     )
   }
 
-  public static getConnectedSquare(direction: Direction, prev: Vector): Vector {
+  public static getConnectedLocation(direction: Direction, prev: Vector): Vector {
     let { x, y } = prev
     switch (direction) {
       case Direction.x_pos:

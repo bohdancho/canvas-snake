@@ -2,23 +2,24 @@ import { Field } from '~/game/field'
 import { Direction, Vector } from '~/game/units'
 import { Snake } from '.'
 import { Food } from '..'
+import { SnakeBodySegment } from './snakeBodySegment'
 
 export class SnakeBody {
-  public readonly state: Vector[]
+  public readonly segments: SnakeBodySegment[]
 
   constructor(
     private readonly snake: Snake,
     private readonly field: Field,
-    initLength: number,
-    initDirection: Direction,
+    initialLength: number,
+    initialDirection: Direction,
   ) {
-    this.state = SnakeBody.getInitialState(this.field, initDirection, initLength)
-    this.state.forEach((position) => this.field.updateSquare(position, snake))
+    this.segments = SnakeBody.getInitialSegments(this.field, initialDirection, initialLength)
+    this.segments.forEach((segment) => this.field.updateSquare(segment.location, snake))
   }
 
   public grow(validDirection: Direction): { event: null | 'ateFood' | 'collapsed' } {
-    const last = SnakeBody.getHead(this.state)
-    const location = Field.getConnectedSquare(validDirection, last)
+    const headSegment = SnakeBody.getLastSegment(this.segments)
+    const location = Field.getConnectedLocation(validDirection, headSegment.location)
     const transpiledLocation = SnakeBody.transpileLocation(location, this.field.length)
 
     const replacedEntity = this.field.getSquare(transpiledLocation).entity
@@ -28,53 +29,60 @@ export class SnakeBody {
     }
     const event = replacedEntity instanceof Food ? 'ateFood' : null
 
-    this.state.push(transpiledLocation)
+    this.segments.push(new SnakeBodySegment(transpiledLocation))
     this.field.updateSquare(transpiledLocation, this.snake)
     this.field.renderSquare(transpiledLocation)
     return { event }
   }
 
   public trimTail(): void {
-    const removed = this.state.shift()
-    if (!removed) throw Error('Snake move error')
-    this.field.updateSquare(removed, null)
-    this.field.renderSquare(removed)
+    const removedSegment = this.segments.shift()
+    if (!removedSegment) throw Error('Snake trimTail failed')
+    this.field.updateSquare(removedSegment.location, null)
+    this.field.renderSquare(removedSegment.location)
   }
 
   private static transpileLocation(location: Vector, fieldLength: number): Vector {
-    const validPosition = { x: location.x, y: location.y }
+    const validLocation = { x: location.x, y: location.y }
 
     const axes = ['x', 'y'] as const
     axes.forEach((axis) => {
       if (location[axis] >= fieldLength) {
-        validPosition[axis] = 0
+        validLocation[axis] = 0
       }
       if (location[axis] < 0) {
-        validPosition[axis] = fieldLength - 1
+        validLocation[axis] = fieldLength - 1
       }
     })
 
-    return new Vector(validPosition.x, validPosition.y)
+    return new Vector(validLocation.x, validLocation.y)
   }
 
-  private static getInitialState(field: Field, direction: Direction, length: number): Vector[] {
-    const start = Vector.random(field.length)
+  private static getInitialSegments(
+    field: Field,
+    direction: Direction,
+    length: number,
+  ): SnakeBodySegment[] {
+    const startLocation = Vector.random(field.length)
+    const startSegment = new SnakeBodySegment(startLocation)
 
-    const body = [start]
-    for (let i = 1; i < length; i++) {
-      const prev = SnakeBody.getHead(body)
-      body.push(Field.getConnectedSquare(direction, prev))
+    const segments = [startSegment]
+    while (segments.length < length) {
+      const prevSegment = SnakeBody.getLastSegment(segments)
+      const location = Field.getConnectedLocation(direction, prevSegment.location)
+      segments.push(new SnakeBodySegment(location))
     }
 
-    if (!field.isValidLocation(SnakeBody.getHead(body))) {
-      return SnakeBody.getInitialState(field, direction, length)
+    const headSegment = SnakeBody.getLastSegment(segments)
+    if (!field.isValidLocation(headSegment.location)) {
+      return SnakeBody.getInitialSegments(field, direction, length)
     }
-    return body
+    return segments
   }
 
-  private static getHead(body: Vector[]): Vector {
-    const head = body.at(-1)
-    if (!head) throw Error('No snake head')
-    return head
+  private static getLastSegment(segments: SnakeBodySegment[]): SnakeBodySegment {
+    const last = segments.at(-1)
+    if (!last) throw Error('Snake without segments')
+    return last
   }
 }
