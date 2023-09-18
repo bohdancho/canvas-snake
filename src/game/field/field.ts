@@ -26,24 +26,24 @@ export class Field {
     this.paintInitBorder()
   }
 
-  public updateSquare(position: Vector, entity: Entity | null): void {
-    const square = this.getSquare(position)
+  public updateSquare(location: Vector, entity: Entity | null): void {
+    const square = this.getSquare(location)
     square.entity = entity
   }
 
-  public renderSquare(position: Vector): void {
-    const square = this.getSquare(position)
+  public renderSquare(location: Vector): void {
+    const square = this.getSquare(location)
     square.render()
   }
 
   public getRandomFreeLocation(): Vector {
-    const position = Vector.random(this.length)
-    const isFree = this.getSquare(position).entity === null
-    return isFree ? position : this.getRandomFreeLocation()
+    const location = Vector.random(this.length)
+    const isFree = this.getSquare(location).entity === null
+    return isFree ? location : this.getRandomFreeLocation()
   }
 
-  public getSquare(position: Vector): Square {
-    return this.squares[position.y][position.x]
+  public getSquare(location: Vector): Square {
+    return this.squares[location.y][location.x]
   }
 
   public isValidLocation(location: Vector): boolean {

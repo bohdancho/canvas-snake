@@ -8,7 +8,7 @@ export class Square {
   constructor(
     private readonly canvas: Canvas,
     private readonly lengthPx: number,
-    private readonly position: Vector,
+    private readonly location: Vector,
     private readonly borderColor: Color,
   ) {}
 
@@ -35,8 +35,8 @@ export class Square {
   private paint(color: Color): void {
     this.canvas.ctx.fillStyle = color
     this.canvas.ctx.fillRect(
-      this.lengthPx * this.position.x,
-      this.lengthPx * this.position.y,
+      this.lengthPx * this.location.x,
+      this.lengthPx * this.location.y,
       this.lengthPx,
       this.lengthPx,
     )
@@ -44,8 +44,8 @@ export class Square {
 
   private clear(): void {
     this.canvas.ctx.clearRect(
-      this.lengthPx * this.position.x,
-      this.lengthPx * this.position.y,
+      this.lengthPx * this.location.x,
+      this.lengthPx * this.location.y,
       this.lengthPx,
       this.lengthPx,
     )
@@ -55,8 +55,8 @@ export class Square {
   private paintBorder(): void {
     this.canvas.ctx.strokeStyle = this.borderColor
     this.canvas.ctx.strokeRect(
-      this.lengthPx * this.position.x,
-      this.lengthPx * this.position.y,
+      this.lengthPx * this.location.x,
+      this.lengthPx * this.location.y,
       this.lengthPx,
       this.lengthPx,
     )

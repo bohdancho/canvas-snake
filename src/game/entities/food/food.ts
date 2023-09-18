@@ -8,14 +8,14 @@ export class Food implements Entity {
 
   constructor(
     private readonly field: Field,
-    private readonly position: Vector,
+    private readonly location: Vector,
     private readonly onEaten: () => void,
   ) {
-    this.field.updateSquare(position, this)
+    this.field.updateSquare(location, this)
   }
 
   public initRender(): void {
-    this.field.renderSquare(this.position)
+    this.field.renderSquare(this.location)
   }
 
   public onDestroy(): void {
