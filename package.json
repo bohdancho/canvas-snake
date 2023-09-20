@@ -1,9 +1,9 @@
 {
-  "name": "canvas-snake",
+  "name": "canvas-kinetics",
   "private": false,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://bohdancho.github.io/canvas-snake",
+  "homepage": "https://bohdancho.github.io/physics",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
